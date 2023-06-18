@@ -1,0 +1,3 @@
+https://parzibyte.me/blog/2021/04/16/leer-csv-cpp/
+https://www.programiz.com/cpp-programming/string-float-conversion#:~:text=C%2B%2B%20string%20to%20float%20and,convert%20string%20to%20long%20double%20.
+https://cplusplus.com/reference/iomanip/setprecision/
