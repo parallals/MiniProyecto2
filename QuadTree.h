@@ -36,9 +36,10 @@ class QuadTree {
             Quad* botLeftTree;
             Quad* botRightTree;
             Quad(Point* topLeft, Point* botRight){
-                n = nullptr;
                 this->topLeft = topLeft;
                 this->botRight = botRight;
+                State = false;
+                n = nullptr;
                 topLeft = nullptr;
                 botRight = nullptr;
                 topLeftTree = nullptr;
@@ -49,8 +50,9 @@ class QuadTree {
             ~Quad();
         };
         Quad* Root;
+        int cantQuads, cantNodes;
         bool inBoundary(Point* point, Quad* quad);
-        void insert(Node* node, Quad* quad);
+        void insert(Node* &node, Quad* &quad);
 
     public:
         int totalPoints();                      // Retorna la cantidad de puntos almacenados en el QuadTree
@@ -59,6 +61,6 @@ class QuadTree {
         int list();                             // Retorna un contenedor con todos los puntos almacenados en el QuadTree. Por cada punto retorna sus coordenadas y su valor asociado (ej. la población). Para esta función, queda a criterio de los estudiantes elegir un recorrido entre preorder, postorder o una variante de inorder. El tipo de retorno dependerá del tipo de contenedor que se utilice.
         int countRegion(Point p, int d);        // Retorna la cantidad de puntos en una región del plano, tomando como centro el punto p y una distancia d.
         int AggregateRegion(Point p, int d);    // Retorna la población estimada dentro de una región del plano, tomando como centro el punto p y una distancia d.
-        QuadTree();                             // Contructor de QuadTree.
+        QuadTree(int x1, int y1, int x2, int y2);                             // Contructor de QuadTree.
         ~QuadTree();                            // Destructor de QuadTree.         
 };

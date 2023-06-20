@@ -8,13 +8,10 @@ using namespace std;
 void QuadTree::insert(int x, int y, string AccentCity, string City, int Population){
     Node* node = new Node(x, y, AccentCity, City, Population);
     insert(node, Root);
-    return;
+    cantNodes++;
 }
 
-void QuadTree::insert(Node* node, Quad* quad){
-    if(node == NULL){
-        return;
-    }
+void QuadTree::insert(Node* &node, Quad* &quad){
     // Current quad cannot contain it
     if(!inBoundary(node->pos, quad)){
         return;
@@ -22,8 +19,8 @@ void QuadTree::insert(Node* node, Quad* quad){
     // We are at a quad of unit area
     // We cannot subdivide this quad further
     if((abs(quad->topLeft->x - quad->botRight->x) <= 1) && (abs(quad->topLeft->y - quad->botRight->y) <= 1)) {
-        if(node == NULL) {
-            quad->n = node;
+        if(quad->node == NULL) {
+            quad->node = node;
         }
         return;
     }
@@ -58,13 +55,33 @@ void QuadTree::insert(Node* node, Quad* quad){
             insert(node, quad->botRightTree);
         }
     }
+    cantQuads++;
 }
 
 // Check if current quadtree contains the point
-bool QuadTree::inBoundary(Point* p, Quad* quad){
-    if(p->x >= quad->topLeft->x && p->x <= quad->botRight->x && p->y >= quad->topLeft->y && p->y <= quad->botRight->y){
+bool QuadTree::inBoundary(Point* point, Quad* quad){
+    if(point->x >= quad->topLeft->x && point->x <= quad->botRight->x && point->y >= quad->topLeft->y && point->y <= quad->botRight->y){
         return true;
     }else{
         return false;
     }
+}
+
+int QuadTree::totalPoints(){
+    return cantNodes;
+}
+
+int QuadTree::totalNodes(){
+    return cantQuads;
+}
+
+QuadTree::QuadTree(int x1, int y1, int x2, int y2){
+    Root = new Quad(new Point(x1, y1), new Point(x2, y2));
+    cantQuads = 0;
+    cantNodes = 0;
+}
+
+QuadTree::~QuadTree(){
+
+
 }
