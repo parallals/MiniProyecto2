@@ -1,6 +1,7 @@
 #include "QuadTree.h"
 
 #include <cmath>
+#include <queue>
 #include <iostream>
 
 using namespace std;
@@ -21,6 +22,7 @@ void QuadTree::insert(Node* &node, Quad* &quad){
     if((abs(quad->topLeft->x - quad->botRight->x) <= 1) && (abs(quad->topLeft->y - quad->botRight->y) <= 1)) {
         if(quad->node == NULL) {
             quad->node = node;
+            ++cantNodes;
         }
         return;
     }
@@ -29,6 +31,7 @@ void QuadTree::insert(Node* &node, Quad* &quad){
         if ((quad->topLeft->y + quad->botRight->y)/2 > node->pos->y) {
             if(quad->topLeftTree == NULL){
                 quad->topLeftTree = new Quad(new Point(quad->topLeft->x, quad->topLeft->y), new Point((quad->topLeft->x + quad->botRight->x) / 2, (quad->topLeft->y + quad->botRight->y) / 2));
+                ++cantQuads;
             }
             insert(node, quad->topLeftTree);
         }
@@ -36,6 +39,7 @@ void QuadTree::insert(Node* &node, Quad* &quad){
         else {
             if(quad->botLeftTree == NULL){
                 quad->botLeftTree = new Quad(new Point(quad->topLeft->x, (quad->topLeft->y + quad->botRight->y) / 2), new Point((quad->topLeft->x + quad->botRight->x) / 2, quad->botRight->y));
+                ++cantQuads;
             }
             insert(node, quad->botLeftTree);
         }
@@ -44,6 +48,7 @@ void QuadTree::insert(Node* &node, Quad* &quad){
         if ((quad->topLeft->y + quad->botRight->y) / 2 > node->pos->y) {
             if(quad->topRightTree == NULL){
                 quad->topRightTree = new Quad(new Point((quad->topLeft->x + quad->botRight->x) / 2, quad->topLeft->y), new Point(quad->botRight->x, (quad->topLeft->y + quad->botRight->y) / 2));
+                ++cantQuads;
             }
             insert(node, quad->topRightTree);
         }
@@ -51,6 +56,7 @@ void QuadTree::insert(Node* &node, Quad* &quad){
         else{
             if(quad->botRightTree == NULL){
                 quad->botRightTree = new Quad(new Point((quad->topLeft->x + quad->botRight->x) / 2, (quad->topLeft->y + quad->botRight->y) / 2), new Point(quad->botRight->x, quad->botRight->y));
+                ++cantQuads;
             }
             insert(node, quad->botRightTree);
         }
@@ -73,6 +79,25 @@ int QuadTree::totalPoints(){
 
 int QuadTree::totalNodes(){
     return cantQuads;
+}
+
+void QuadTree::inorder(Quad* r, std::queue<int> lista){
+    if(r!=nullptr){
+        inorder(r->topLeftTree,lista);
+        lista.push(r->node->Population);
+        inorder(r->topRightTree,lista);
+        lista.push(r->node->Population);
+        inorder(r->botLeftTree,lista);
+        lista.push(r->node->Population);
+        inorder(r->botRightTree,lista);
+        lista.push(r->node->Population);
+    }
+}
+
+std::queue<int> QuadTree::list(){
+    std::queue<int> listaPoblacion;
+    inorder(Root,listaPoblacion);
+    return listaPoblacion;
 }
 
 QuadTree::QuadTree(int x1, int y1, int x2, int y2){
