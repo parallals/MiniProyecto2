@@ -31,7 +31,6 @@ void QuadTree::insert(Node* &node, Quad* &quad){
         if ((quad->topLeft->y + quad->botRight->y)/2 > node->pos->y) {
             if(quad->topLeftTree == NULL){
                 quad->topLeftTree = new Quad(new Point(quad->topLeft->x, quad->topLeft->y), new Point((quad->topLeft->x + quad->botRight->x) / 2, (quad->topLeft->y + quad->botRight->y) / 2));
-                ++cantQuads;
             }
             insert(node, quad->topLeftTree);
         }
@@ -39,7 +38,6 @@ void QuadTree::insert(Node* &node, Quad* &quad){
         else {
             if(quad->botLeftTree == NULL){
                 quad->botLeftTree = new Quad(new Point(quad->topLeft->x, (quad->topLeft->y + quad->botRight->y) / 2), new Point((quad->topLeft->x + quad->botRight->x) / 2, quad->botRight->y));
-                ++cantQuads;
             }
             insert(node, quad->botLeftTree);
         }
@@ -48,7 +46,6 @@ void QuadTree::insert(Node* &node, Quad* &quad){
         if ((quad->topLeft->y + quad->botRight->y) / 2 > node->pos->y) {
             if(quad->topRightTree == NULL){
                 quad->topRightTree = new Quad(new Point((quad->topLeft->x + quad->botRight->x) / 2, quad->topLeft->y), new Point(quad->botRight->x, (quad->topLeft->y + quad->botRight->y) / 2));
-                ++cantQuads;
             }
             insert(node, quad->topRightTree);
         }
@@ -56,7 +53,6 @@ void QuadTree::insert(Node* &node, Quad* &quad){
         else{
             if(quad->botRightTree == NULL){
                 quad->botRightTree = new Quad(new Point((quad->topLeft->x + quad->botRight->x) / 2, (quad->topLeft->y + quad->botRight->y) / 2), new Point(quad->botRight->x, quad->botRight->y));
-                ++cantQuads;
             }
             insert(node, quad->botRightTree);
         }

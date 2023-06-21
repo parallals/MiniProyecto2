@@ -18,13 +18,14 @@ class QuadTree {
             string AccentCity;
             string City;
             int Population;
-            Node* node;
+            Node* next;
             Node(int x, int y, string AccentCity, string City, int Population){
                 this->pos->x = x;
                 this->pos->y = y;
                 this->AccentCity;
                 this->City;
                 this->Population;
+                next = nullptr;
             }
             ~Node();
         };
