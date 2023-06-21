@@ -17,6 +17,7 @@ class QuadTree {
             string AccentCity;
             string City;
             int Population;
+            Node* node;
             Node(int x, int y, string AccentCity, string City, int Population){
                 this->pos->x = x;
                 this->pos->y = y;
@@ -28,7 +29,7 @@ class QuadTree {
         };
         struct Quad {
             bool State; // false=blanco  true=negro 
-            Node* n;
+            Node* node;
             Point* topLeft;
             Point* botRight;
             Quad* topLeftTree;
@@ -39,7 +40,7 @@ class QuadTree {
                 this->topLeft = topLeft;
                 this->botRight = botRight;
                 State = false;
-                n = nullptr;
+                node = nullptr;
                 topLeft = nullptr;
                 botRight = nullptr;
                 topLeftTree = nullptr;
