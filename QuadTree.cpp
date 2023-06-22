@@ -1,10 +1,4 @@
 #include "QuadTree.h"
-
-#include <cmath>
-#include <queue>
-#include <iostream>
-
-using namespace std;
  
 void QuadTree::insert(int x, int y, string AccentCity, string City, int Population){
     Node* node = new Node(x, y, AccentCity, City, Population);
@@ -12,9 +6,9 @@ void QuadTree::insert(int x, int y, string AccentCity, string City, int Populati
     cantNodes++;
 }
 
-void QuadTree::insert(Node* &node, Quad* &quad){
+void QuadTree::insert(Node* node, Quad* &quad){
     // Current quad cannot contain it
-    if(!inBoundary(node->pos, quad)){
+    if(inBoundary(node->pos, quad) == false){
         return;
     }
     // We are at a quad of unit area
@@ -22,8 +16,14 @@ void QuadTree::insert(Node* &node, Quad* &quad){
     if((abs(quad->topLeft->x - quad->botRight->x) <= 1) && (abs(quad->topLeft->y - quad->botRight->y) <= 1)) {
         if(quad->node == NULL) {
             quad->node = node;
-            ++cantNodes;
+        } else {
+            Node* auxnode = quad->node;
+            while(auxnode->next != nullptr){
+                auxnode = auxnode->next;
+            }
+            auxnode->next = node;
         }
+        ++cantNodes;
         return;
     }
     if((quad->topLeft->x + quad->botRight->x) / 2 > node->pos->x) {
@@ -77,24 +77,26 @@ int QuadTree::totalNodes(){
     return cantQuads;
 }
 
-void QuadTree::inorder(Quad* r, std::queue<int> lista){
-    if(r!=nullptr){
-        inorder(r->topLeftTree,lista);
-        lista.push(r->node->Population);
-        inorder(r->topRightTree,lista);
-        lista.push(r->node->Population);
-        inorder(r->botLeftTree,lista);
-        lista.push(r->node->Population);
-        inorder(r->botRightTree,lista);
-        lista.push(r->node->Population);
+void QuadTree::inOrder(Quad* quad, std::queue<int> lista){
+    if(quad != nullptr){
+        Node* auxnode = quad->node;
+        while(auxnode != nullptr){
+            lista.push(auxnode->Population);
+            auxnode = auxnode->next;
+        }
+        inOrder(quad->topLeftTree,lista);
+        inOrder(quad->topRightTree,lista);
+        inOrder(quad->botLeftTree,lista);
+        inOrder(quad->botRightTree,lista);
     }
 }
 
 std::queue<int> QuadTree::list(){
     std::queue<int> listaPoblacion;
-    inorder(Root,listaPoblacion);
+    inOrder(Root,listaPoblacion);
     return listaPoblacion;
 }
+
 
 QuadTree::QuadTree(int x1, int y1, int x2, int y2){
     Root = new Quad(new Point(x1, y1), new Point(x2, y2));

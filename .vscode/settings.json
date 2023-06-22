@@ -46,6 +46,7 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "iomanip": "cpp",
-        "ctime": "cpp"
+        "ctime": "cpp",
+        "queue": "cpp"
     }
 }
