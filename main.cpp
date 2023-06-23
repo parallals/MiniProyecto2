@@ -16,12 +16,12 @@ int main() {
     QuadTree quadtree = QuadTree(-90, 180, 90, -180);
     // Leemos todas las líneas.
     int cont = 0;
-    string AccentCity, x, y, Population, aux;
+    string AccentCity, City, x, y, Population, aux;
     while (getline(archivo, linea) && cont < 10) { //getline(archivo, linea)
         stringstream stream(linea); // Convertir la cadena a un stream. 
         // Saltar valores que no ocuparemos.
         getline(stream, aux, ';');
-        getline(stream, aux, ';');
+        getline(stream, City, ';');
         getline(stream, AccentCity, ';');
         getline(stream, aux, ';');
         getline(stream, Population, ';');
@@ -29,14 +29,14 @@ int main() {
         getline(stream, aux, ';');
         getline(stream, x, ',');
         getline(stream, y, '\n');
-        quadtree.insert(stod(x), stod(y), AccentCity, stoi(Population)); 
+        quadtree.insert((int)stod(x), (int)stod(y), AccentCity, City, stoi(Population)); 
         cont++;
     }
     archivo.close();
-    queue<Node*>* q = quadtree.list();
+    queue<int>* q = quadtree.list();
+    
     cout << quadtree.totalNodes() << "    " << quadtree.totalPoints() << endl;
     for(int i=0 ; i<10 ; i++){
-        cout << "Population " << i << ": " << q->front() << endl;
         q->pop();
     }
 }
