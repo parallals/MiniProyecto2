@@ -53,20 +53,21 @@ class QuadTree {
         };
         Quad* Root;
         int cantQuads, cantNodes;
+        int Presicion;
         bool inBoundary(Point* point, Quad* quad);
         void insert(Node* node, Quad* &quad);
-        void preOrder(Quad* &quad, queue<int>* &lista);
+        void preOrder(Quad* &quad, queue<Node*>* &lista);
 
     public:
         int totalPoints();                      // Retorna la cantidad de puntos almacenados en el QuadTree.
         int totalNodes();                       // Retorna la cantidad de nodos, tanto blancos como negros, en el QuadTree.
-        void insert(int x, int y, string AccentCity, int Population);         // Inserta un nuevo punto p en el QuadTree, asociando a dicho punto la 
+        void insert(float x, float y, string AccentCity, int Population);         // Inserta un nuevo punto p en el QuadTree, asociando a dicho punto la 
                                                                                            // información disponible en data (ej. la población de una ciudad con coordenadas p).
-        queue<int>* list();                 // Retorna un contenedor con todos los puntos almacenados en el QuadTree. Por cada punto retorna sus coordenadas y su valor 
+        queue<Node*>* list();                 // Retorna un contenedor con todos los puntos almacenados en el QuadTree. Por cada punto retorna sus coordenadas y su valor 
                                                 // asociado (ej. la población). Para esta función, queda a criterio de los estudiantes elegir un recorrido entre preorder, 
                                                 // postorder o una variante de inorder. El tipo de retorno dependerá del tipo de contenedor que se utilice.
         int countRegion(Point p, int d);        // Retorna la cantidad de puntos en una región del plano, tomando como centro el punto p y una distancia d.
         int AggregateRegion(Point p, int d);    // Retorna la población estimada dentro de una región del plano, tomando como centro el punto p y una distancia d.
-        QuadTree(int x1, int y1, int x2, int y2);                             // Contructor de QuadTree.
+        QuadTree(float x1, float y1, float x2, float y2);                             // Contructor de QuadTree.
         ~QuadTree();                            // Destructor de QuadTree.         
 };

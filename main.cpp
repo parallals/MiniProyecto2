@@ -29,11 +29,11 @@ int main() {
         getline(stream, aux, ';');
         getline(stream, x, ',');
         getline(stream, y, '\n');
-        quadtree.insert((int)stod(x), (int)stod(y), AccentCity, stoi(Population)); 
+        quadtree.insert(stod(x), stod(y), AccentCity, stoi(Population)); 
         cont++;
     }
     archivo.close();
-    queue<int>* q = quadtree.list();
+    queue<Node*>* q = quadtree.list();
     cout << quadtree.totalNodes() << "    " << quadtree.totalPoints() << endl;
     for(int i=0 ; i<10 ; i++){
         cout << "Population " << i << ": " << q->front() << endl;

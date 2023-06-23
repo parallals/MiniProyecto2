@@ -1,7 +1,7 @@
 #include "QuadTree.h"
  
-void QuadTree::insert(int x, int y, string AccentCity, int Population){
-    Node* node = new Node(x, y, AccentCity, Population);
+void QuadTree::insert(float x, float y, string AccentCity, int Population){
+    Node* node = new Node((int)x*Presicion, (int)y*Presicion, AccentCity, Population);
     insert(node, Root);
 }
 
@@ -77,11 +77,11 @@ int QuadTree::totalNodes(){
     return cantQuads;
 }
 
-void QuadTree::preOrder(Quad* &quad, queue<int>* &lista){
+void QuadTree::preOrder(Quad* &quad, queue<Node*>* &lista){
     if(quad != nullptr){
         Node* auxnode = quad->node;
         while(auxnode != nullptr){
-            lista->push(auxnode->Population);
+            lista->push(auxnode);
             auxnode = auxnode->next;
         }
         preOrder(quad->topLeftTree, lista);
@@ -91,14 +91,15 @@ void QuadTree::preOrder(Quad* &quad, queue<int>* &lista){
     }
 }
 
-queue<int>* QuadTree::list(){
-    queue<int>* listaPoblacion = new queue<int>();
+queue<QuadTree::Node*>* QuadTree::list(){
+    queue<Node*>* listaPoblacion = new queue<Node*>();
     preOrder(Root, listaPoblacion);
     return listaPoblacion;
 }
 
-QuadTree::QuadTree(int x1, int y1, int x2, int y2){
-    Root = new Quad(new Point(x1, y1), new Point(x2, y2));
+QuadTree::QuadTree(float x1, float y1, float x2, float y2){
+    Root = new Quad(new Point((int)x1*Presicion, (int)y1*Presicion), new Point((int)x2*Presicion, (int)y2*Presicion));
+    Presicion = 1000;
     cantQuads = 0;
     cantNodes = 0;
 }
