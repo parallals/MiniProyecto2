@@ -13,7 +13,7 @@ int main() {
     // Leemos la primer línea para descartarla, pues es el encabezado.
     getline(archivo, linea);
     // Variables que ocuparemos.
-    QuadTree quadtree = QuadTree(-180, 90, 180, -90);
+    QuadTree quadtree = QuadTree(-90, 180, 90, -180);
     // Leemos todas las líneas.
     int cont = 0;
     string AccentCity, City, x, y, Population, aux;
@@ -34,6 +34,8 @@ int main() {
     }
     archivo.close();
     queue<int>* q = quadtree.list();
+    
+    cout << quadtree.totalNodes() << "    " << quadtree.totalPoints() << endl;
     for(int i=0 ; i<10 ; i++){
         cout << "Population " << i << ": " << q->front() << endl;
         q->pop();

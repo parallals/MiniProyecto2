@@ -3,12 +3,12 @@
 void QuadTree::insert(int x, int y, string AccentCity, string City, int Population){
     Node* node = new Node(x, y, AccentCity, City, Population);
     insert(node, Root);
-    cantNodes++;
 }
 
 void QuadTree::insert(Node* node, Quad* &quad){
     // Current quad cannot contain it
-    if(inBoundary(node->pos, quad) == false){
+    if(inBoundary(node->pos, quad) == true){
+        delete node;
         return;
     }
     // We are at a quad of unit area
