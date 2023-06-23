@@ -1,7 +1,7 @@
 #include "QuadTree.h"
  
-void QuadTree::insert(int x, int y, string AccentCity, string City, int Population){
-    Node* node = new Node(x, y, AccentCity, City, Population);
+void QuadTree::insert(int x, int y, string AccentCity, int Population){
+    Node* node = new Node(x, y, AccentCity, Population);
     insert(node, Root);
 }
 

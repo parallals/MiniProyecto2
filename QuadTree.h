@@ -20,13 +20,11 @@ class QuadTree {
         struct Node {
             Point* pos;
             string AccentCity;
-            string City;
             int Population;
             Node* next;
-            Node(int x, int y, string AccentCity, string City, int Population){
+            Node(int x, int y, string AccentCity, int Population){
                 this->pos = new Point(x, y);
                 this->AccentCity = AccentCity;
-                this->City = City;
                 this->Population = Population;
                 next = nullptr;
             }
@@ -62,7 +60,7 @@ class QuadTree {
     public:
         int totalPoints();                      // Retorna la cantidad de puntos almacenados en el QuadTree.
         int totalNodes();                       // Retorna la cantidad de nodos, tanto blancos como negros, en el QuadTree.
-        void insert(int x, int y, string AccentCity, string City, int Population);         // Inserta un nuevo punto p en el QuadTree, asociando a dicho punto la 
+        void insert(int x, int y, string AccentCity, int Population);         // Inserta un nuevo punto p en el QuadTree, asociando a dicho punto la 
                                                                                            // información disponible en data (ej. la población de una ciudad con coordenadas p).
         queue<int>* list();                 // Retorna un contenedor con todos los puntos almacenados en el QuadTree. Por cada punto retorna sus coordenadas y su valor 
                                                 // asociado (ej. la población). Para esta función, queda a criterio de los estudiantes elegir un recorrido entre preorder, 
