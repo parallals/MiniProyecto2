@@ -88,6 +88,7 @@ void QuadTree::inOrder(Quad* quad, std::queue<int> lista){
         inOrder(quad->topRightTree,lista);
         inOrder(quad->botLeftTree,lista);
         inOrder(quad->botRightTree,lista);
+        delete auxnode;
     }
 }
 

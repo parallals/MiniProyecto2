@@ -25,8 +25,7 @@ class QuadTree {
             int Population;
             Node* next;
             Node(int x, int y, string AccentCity, string City, int Population){
-                this->pos->x = x;
-                this->pos->y = y;
+                this->pos = new Point(x, y);
                 this->AccentCity;
                 this->City;
                 this->Population;

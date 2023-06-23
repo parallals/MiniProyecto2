@@ -29,7 +29,7 @@ int main() {
         getline(stream, aux, ';');
         getline(stream, x, ',');
         getline(stream, y, '\n');
-        cout << y  << endl;
+        cout << Population  << endl;
         quadtree.insert((int)stod(x), (int)stod(y), AccentCity, City, stoi(Population)); 
         cont++;
     }
