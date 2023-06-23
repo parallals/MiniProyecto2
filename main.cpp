@@ -29,16 +29,14 @@ int main() {
         getline(stream, aux, ';');
         getline(stream, x, ',');
         getline(stream, y, '\n');
-        cout << Population  << endl;
         quadtree.insert((int)stod(x), (int)stod(y), AccentCity, City, stoi(Population)); 
         cont++;
     }
     archivo.close();
-    cout << "flag" << endl;
-    queue q = quadtree.list();
+    queue<int>* q = quadtree.list();
     for(int i=0 ; i<10 ; i++){
-        cout << "Population " << i << "; " << q.front() << endl;
-        q.pop();
+        cout << "Population " << i << ": " << q->front() << endl;
+        q->pop();
     }
 }
 // g++ -o MaxMinCoords MaxMinCoord.cpp

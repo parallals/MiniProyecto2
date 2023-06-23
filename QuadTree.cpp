@@ -26,7 +26,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
         ++cantNodes;
         return;
     }
-    if((quad->topLeft->x + quad->botRight->x) / 2 > node->pos->x) {
+    if((quad->topLeft->x + quad->botRight->x)/2 > node->pos->x) {
         // Indicates topLeftTree
         if ((quad->topLeft->y + quad->botRight->y)/2 > node->pos->y) {
             if(quad->topLeftTree == NULL){
@@ -43,7 +43,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
         }
     }else{
         // Indicates topRightTree
-        if ((quad->topLeft->y + quad->botRight->y) / 2 > node->pos->y) {
+        if ((quad->topLeft->y + quad->botRight->y)/2 > node->pos->y) {
             if(quad->topRightTree == NULL){
                 quad->topRightTree = new Quad(new Point((quad->topLeft->x + quad->botRight->x) / 2, quad->topLeft->y), new Point(quad->botRight->x, (quad->topLeft->y + quad->botRight->y) / 2));
             }
@@ -77,27 +77,25 @@ int QuadTree::totalNodes(){
     return cantQuads;
 }
 
-void QuadTree::inOrder(Quad* quad, std::queue<int> lista){
+void QuadTree::preOrder(Quad* &quad, queue<int>* &lista){
     if(quad != nullptr){
         Node* auxnode = quad->node;
         while(auxnode != nullptr){
-            lista.push(auxnode->Population);
+            lista->push(auxnode->Population);
             auxnode = auxnode->next;
         }
-        inOrder(quad->topLeftTree,lista);
-        inOrder(quad->topRightTree,lista);
-        inOrder(quad->botLeftTree,lista);
-        inOrder(quad->botRightTree,lista);
-        delete auxnode;
+        preOrder(quad->topLeftTree, lista);
+        preOrder(quad->topRightTree, lista);
+        preOrder(quad->botLeftTree, lista);
+        preOrder(quad->botRightTree, lista);
     }
 }
 
-std::queue<int> QuadTree::list(){
-    std::queue<int> listaPoblacion;
-    inOrder(Root,listaPoblacion);
+queue<int>* QuadTree::list(){
+    queue<int>* listaPoblacion = new queue<int>();
+    preOrder(Root, listaPoblacion);
     return listaPoblacion;
 }
-
 
 QuadTree::QuadTree(int x1, int y1, int x2, int y2){
     Root = new Quad(new Point(x1, y1), new Point(x2, y2));
