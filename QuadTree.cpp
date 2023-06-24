@@ -81,6 +81,12 @@ int QuadTree::totalNodes(){
     return cantQuads;
 }
 
+queue<Node*>* QuadTree::list(){
+    queue<Node*>* listaPoblacion = new queue<Node*>();
+    preOrder(Root, listaPoblacion);
+    return listaPoblacion;
+}
+
 void QuadTree::preOrder(Quad* quad, queue<Node*>* &lista){
     if(quad != nullptr){
         Node* auxnode = quad->node;
@@ -95,12 +101,6 @@ void QuadTree::preOrder(Quad* quad, queue<Node*>* &lista){
     }
 }
 
-queue<Node*>* QuadTree::list(){
-    queue<Node*>* listaPoblacion = new queue<Node*>();
-    preOrder(Root, listaPoblacion);
-    return listaPoblacion;
-}
-
 QuadTree::QuadTree(int x1, int y1, int x2, int y2){
     Root = new Quad(Point(x1, y1), Point(x2, y2));
     cantQuads = 1;
@@ -111,11 +111,6 @@ QuadTree::~QuadTree(){
 
 
 }
-
-
-
-
-
 
 Node* QuadTree::search(int x, int y){
     return search(Root, Point(x, y));
@@ -167,34 +162,6 @@ Node* QuadTree::search(Quad* quad, Point point){
 		}
 	}
 };  
-
-int QuadTree::countRegion(Point p, int d){
-    int counter = 0;
-    int xTL = p.x - d; int yTL = p.y - d;
-    if(p.x - d < 0){
-        p.x = 0;
-    }
-    if(p.y - d > 0){
-        p.y = 0;
-    }
-    int xBR = p.x + d; int yBR = p.y + d;
-    if(p.x + d > 360){
-        p.x = 360;
-    }
-    if(p.y + d > 360){
-        p.y = 360;
-    }
-    
-    for(int i = xTL; i < xBR - xTL; ++i){
-        for(int j = yTL; j < yBR - yTL; ++j){
-            Node* aux = search(Root, Point(i,j));
-            if(aux != nullptr){
-                ++counter;
-            };
-        }
-    }
-    return counter;
-}
 
 int QuadTree::countRegion(Point p, int d){
     int counter = 0;
