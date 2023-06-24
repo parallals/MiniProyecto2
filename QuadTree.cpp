@@ -1,5 +1,39 @@
 #include "QuadTree.h"
  
+ 
+QuadTree::QuadTree(int x1, int y1, int x2, int y2){
+    Root = new Quad(Point(x1, y1), Point(x2, y2));
+    cantQuads = 1;
+    cantNodes = 0;
+}
+
+QuadTree::~QuadTree(){
+
+}
+
+// Check if current quadtree contains the point
+bool QuadTree::inBoundary(Point point, Quad* quad){
+    if((point.x >= quad->topLeft.x) && (point.x <= quad->botRight.x) && (point.y >= quad->topLeft.y) && (point.y <= quad->botRight.y)){
+        return true; // Punto dentro del Quad.
+    }
+    return false; // Punto fuera del Quad.
+}
+
+bool QuadTree::interseccionRegiones(Point point, int d, Quad* quad){
+    if((quad->botRight.x < point.x-d) || (quad->topLeft.x > point.x+d) || (quad->botRight.y < point.y-d) || (quad->topLeft.y > point.y+d)){
+        return false; // Quad fuera de la Región.
+    }
+    return true; // Quad dentro o intersectando la Región.
+}
+
+int QuadTree::totalPoints(){
+    return cantNodes;
+}
+
+int QuadTree::totalNodes(){
+    return cantQuads;
+}
+
 void QuadTree::insert(int x, int y, string AccentCity, int Population){
     Node* node = new Node(x, y, AccentCity, Population);
     insert(node, Root);
@@ -25,6 +59,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
             while(auxnode->next != nullptr){
                 auxnode = auxnode->next;
             }
+            cout << "aaa" << endl;
             auxnode->next = node;
         }
         ++cantNodes;
@@ -62,54 +97,6 @@ void QuadTree::insert(Node* node, Quad* &quad){
         }
     }
     cantQuads++;
-}
-
-// Check if current quadtree contains the point
-bool QuadTree::inBoundary(Point point, Quad* quad){
-    if(point.x >= quad->topLeft.x && point.x <= quad->botRight.x && point.y >= quad->topLeft.y && point.y <= quad->botRight.y){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-int QuadTree::totalPoints(){
-    return cantNodes;
-}
-
-int QuadTree::totalNodes(){
-    return cantQuads;
-}
-
-queue<Node*>* QuadTree::list(){
-    queue<Node*>* listaPoblacion = new queue<Node*>();
-    preOrder(Root, listaPoblacion);
-    return listaPoblacion;
-}
-
-void QuadTree::preOrder(Quad* quad, queue<Node*>* &lista){
-    if(quad != nullptr){
-        Node* auxnode = quad->node;
-        while(auxnode != nullptr){
-            lista->push(auxnode);
-            auxnode = auxnode->next;
-        }
-        preOrder(quad->topLeftTree, lista);
-        preOrder(quad->topRightTree, lista);
-        preOrder(quad->botLeftTree, lista);
-        preOrder(quad->botRightTree, lista);
-    }
-}
-
-QuadTree::QuadTree(int x1, int y1, int x2, int y2){
-    Root = new Quad(Point(x1, y1), Point(x2, y2));
-    cantQuads = 1;
-    cantNodes = 0;
-}
-
-QuadTree::~QuadTree(){
-
-
 }
 
 Node* QuadTree::search(int x, int y){
@@ -161,8 +148,69 @@ Node* QuadTree::search(Quad* quad, Point point){
 			return search(quad->botRightTree, point);
 		}
 	}
-};  
+}
 
+queue<Node*>* QuadTree::list(){
+    queue<Node*>* lista = new queue<Node*>();
+    preOrder(Root, lista);
+    return lista;
+}
+
+void QuadTree::preOrder(Quad* quad, queue<Node*>* &lista){
+    if(quad != nullptr){
+        Node* auxnode = quad->node;
+        while(auxnode != nullptr){
+            lista->push(auxnode);
+            auxnode = auxnode->next;
+        }
+        preOrder(quad->topLeftTree, lista);
+        preOrder(quad->topRightTree, lista);
+        preOrder(quad->botLeftTree, lista);
+        preOrder(quad->botRightTree, lista);
+    }
+}
+
+int QuadTree::countRegion(int x, int y, int d){
+    return countRegion(Point(x, y), d);
+}
+
+int QuadTree::countRegion(Point point, int d){
+    int countQuads = 0;
+    queue<Quad*> cola;
+    cola.push(Root);
+    while (cola.empty() == false){
+        Quad* quad = cola.front();
+        cola.pop();
+        if(interseccionRegiones(point, d, quad) == true){
+            Node* auxnodo = quad->node;
+            while (auxnodo != nullptr){
+                countQuads++;
+                auxnodo = auxnodo->next;
+            }
+        }
+        if(quad->topLeftTree != nullptr){
+            cola.push(quad->topLeftTree);
+        }
+        if(quad->topRightTree != nullptr){
+            cola.push(quad->topRightTree);
+        }
+        if(quad->botLeftTree != nullptr){
+            cola.push(quad->botLeftTree);
+        }
+        if(quad->botRightTree != nullptr){
+            cola.push(quad->botRightTree);
+        }
+    }
+    return countQuads;
+}
+
+
+
+
+
+
+
+/*
 int QuadTree::countRegion(Point p, int d){
     int counter = 0;
     int xTL = p.x - d; int yTL = p.y - d;
@@ -224,3 +272,4 @@ int QuadTree::AggregateRegion(Point p, int d){
     }
     return counter;
 }
+*/

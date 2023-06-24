@@ -15,8 +15,5 @@ Node::Node(Point point, std::string AccentCity, int Population){
 }
 
 Node::~Node(){
-    delete next;
     next = nullptr;
 }
-
-

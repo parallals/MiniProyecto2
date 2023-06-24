@@ -18,7 +18,7 @@ int main() {
     // Leemos todas las líneas.
     int cont = 0;
     string AccentCity, x, y, Population, aux;
-    while (getline(archivo, linea) && cont < 100) { //getline(archivo, linea)
+    while (getline(archivo, linea) /*&& cont < 1000000*/) { //getline(archivo, linea)
         stringstream stream(linea); // Convertir la cadena a un stream. 
         // Saltar valores que no ocuparemos.
         getline(stream, aux, ';');
@@ -35,10 +35,8 @@ int main() {
     }
     archivo.close();
     queue<Node*>* q = quadtree.list();
-    cout << quadtree.totalNodes() << "    " << quadtree.totalPoints() << endl;
-    for(int i=0 ; i<10 ; i++){
-        cout << "Population " << i << ": " << fixed << setprecision(7) << q->front()->pos.y/(float)Presicion << endl;
-        q->pop();
-    }
+    cout << "Cantidad de Nodos: " << quadtree.totalNodes() << "   |   Cantidad de Puntos: " << quadtree.totalPoints() << endl;
+    cout << "Nodos dentro de x=[-30,30] e y=[-30,30]: " << quadtree.countRegion(0*Presicion, 0*Presicion, 170*Presicion) << endl;
+    
 }
 // g++ -o main main.cpp QuadTree.cpp Node.cpp Point.cpp
