@@ -183,7 +183,7 @@ int QuadTree::countRegion(Point p, int d){
     }
     
     for(int i = xTL; i < xBR - xTL; ++i){
-        for(int j = yTL; j < yBR - y; ++j){
+        for(int j = yTL; j < yBR - yTL; ++j){
             Node* aux = search(Root, Point(i,j));
             if(aux != nullptr){
                 ++counter;
@@ -211,10 +211,13 @@ int QuadTree::countRegion(Point p, int d){
     }
     
     for(int i = xTL; i < xBR - xTL; ++i){
-        for(int j = yTL; j < yBR - y; ++j){
+        for(int j = yTL; j < yBR - yTL; ++j){
             Node* aux = search(Root, Point(i,j));
             if(aux != nullptr){
-                counter = counter + aux->Population;
+                while(aux->next != nullptr){
+                    counter = counter + aux->Population;
+                    aux = aux->next;
+                }
             };
         }
     }
