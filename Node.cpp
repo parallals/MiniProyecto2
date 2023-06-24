@@ -7,6 +7,13 @@ Node::Node(int x, int y, std::string AccentCity, int Population){
     next = nullptr;
 }
 
+Node::Node(Point point, std::string AccentCity, int Population){
+    pos = point;
+    this->AccentCity = AccentCity;
+    this->Population = Population;
+    next = nullptr;
+}
+
 Node::~Node(){
     delete next;
     next = nullptr;

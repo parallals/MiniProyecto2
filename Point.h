@@ -7,6 +7,7 @@ class Point{
         int y;
         Point(int x, int y);
         Point();
+        ~Point();
 };
 
 #endif

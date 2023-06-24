@@ -7,3 +7,6 @@ Point::Point(int x, int y){
 
 Point::Point(){  
 }
+
+Point::~Point(){  
+}

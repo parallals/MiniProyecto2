@@ -5,6 +5,10 @@ void QuadTree::insert(int x, int y, string AccentCity, int Population){
     insert(node, Root);
 }
 
+void QuadTree::insert(Node* node){
+    insert(node, Root);
+}
+
 void QuadTree::insert(Node* node, Quad* &quad){
     // Current quad cannot contain it
     if(inBoundary(node->pos, quad) == true){
@@ -59,7 +63,6 @@ void QuadTree::insert(Node* node, Quad* &quad){
     }
     cantQuads++;
 }
-
 
 // Check if current quadtree contains the point
 bool QuadTree::inBoundary(Point point, Quad* quad){
