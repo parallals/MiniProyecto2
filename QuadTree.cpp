@@ -59,7 +59,6 @@ void QuadTree::insert(Node* node, Quad* &quad){
             while(auxnode->next != nullptr){
                 auxnode = auxnode->next;
             }
-            cout << "aaa" << endl;
             auxnode->next = node;
         }
         ++cantNodes;
@@ -70,6 +69,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
         if ((quad->topLeft.y + quad->botRight.y)/2 > node->pos.y) {
             if(quad->topLeftTree == nullptr){
                 quad->topLeftTree = new Quad(Point(quad->topLeft.x, quad->topLeft.y), Point((quad->topLeft.x + quad->botRight.x) / 2, (quad->topLeft.y + quad->botRight.y) / 2));
+                cantQuads++;
             }
             insert(node, quad->topLeftTree);
         }
@@ -77,6 +77,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
         else {
             if(quad->botLeftTree == nullptr){
                 quad->botLeftTree = new Quad(Point(quad->topLeft.x, (quad->topLeft.y + quad->botRight.y) / 2), Point((quad->topLeft.x + quad->botRight.x) / 2, quad->botRight.y));
+                cantQuads++;
             }
             insert(node, quad->botLeftTree);
         }
@@ -85,6 +86,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
         if ((quad->topLeft.y + quad->botRight.y)/2 > node->pos.y) {
             if(quad->topRightTree == nullptr){
                 quad->topRightTree = new Quad(Point((quad->topLeft.x + quad->botRight.x) / 2, quad->topLeft.y), Point(quad->botRight.x, (quad->topLeft.y + quad->botRight.y) / 2));
+                cantQuads++;
             }
             insert(node, quad->topRightTree);
         }
@@ -92,11 +94,11 @@ void QuadTree::insert(Node* node, Quad* &quad){
         else{
             if(quad->botRightTree == nullptr){
                 quad->botRightTree = new Quad(Point((quad->topLeft.x + quad->botRight.x) / 2, (quad->topLeft.y + quad->botRight.y) / 2), Point(quad->botRight.x, quad->botRight.y));
+                cantQuads++;
             }
             insert(node, quad->botRightTree);
         }
     }
-    cantQuads++;
 }
 
 Node* QuadTree::search(int x, int y){
