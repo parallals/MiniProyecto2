@@ -2,13 +2,11 @@
 #define Point_H
 
 class Point{
-    protected:
+    public:
         int x;
         int y;
-
-    public:
+        Point(int x, int y);
         Point();
-        int getX();
-        int getY();        
 };
+
 #endif

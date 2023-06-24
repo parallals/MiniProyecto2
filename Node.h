@@ -1,23 +1,18 @@
 #ifndef Node_H
 #define Node_H
-#include <Point.h>
+
+#include "Point.h"
+
 #include <string>
 
-using namespace std;
-
 class Node{
-    protected:
-        Point* pos;
-        string AccentCity;
-        string City;
+    public:
+        Point pos;
+        std::string AccentCity;
         int Population;
         Node* next;
-    public:
-        Node();     
-        Point* getpos();
-        string getAccentCity();
-        string getCity();
-        int getPopulation();
-        Node* getNext(); 
+        Node(int x, int y, std::string AccentCity, int Population);
+        ~Node();
 };
+
 #endif

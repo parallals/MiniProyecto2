@@ -1,34 +1,15 @@
-#include <Node.h>
-#include <string>
-#include <Point.h>
-using namespace std;
+#include "Node.h"
 
- Node::Node(int x, int y, string AccentCity, string City, int Population){
-       this->pos = new Point(x, y);
-       this->AccentCity = AccentCity;
-       this->City = City;
-       this->Population = Population;
-       next = nullptr;
+Node::Node(int x, int y, std::string AccentCity, int Population){
+    pos = Point(x, y);
+    this->AccentCity = AccentCity;
+    this->Population = Population;
+    next = nullptr;
 }
 
-Point* Node::getpos(){
-    return pos;
-}
-
-string Node::getAccentCity(){
-    return AccentCity;
-}
-
-string Node::getCity(){
-    return City;
-}
-
-int Node::getPopulation(){
-    return Population;
-}
-
-Node* Node::getNext(){
-    return next;
+Node::~Node(){
+    delete next;
+    next = nullptr;
 }
 
 

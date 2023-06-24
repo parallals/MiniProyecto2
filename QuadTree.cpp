@@ -1,7 +1,7 @@
 #include "QuadTree.h"
  
-void QuadTree::insert(float x, float y, string AccentCity, int Population){
-    Node* node = new Node((int)x*Presicion, (int)y*Presicion, AccentCity, Population);
+void QuadTree::insert(int x, int y, string AccentCity, int Population){
+    Node* node = new Node(x, y, AccentCity, Population);
     insert(node, Root);
 }
 
@@ -14,44 +14,45 @@ void QuadTree::insert(Node* node, Quad* &quad){
     // We are at a quad of unit area
     // We cannot subdivide this quad further
     if((abs(quad->topLeft->x - quad->botRight->x) <= 1) && (abs(quad->topLeft->y - quad->botRight->y) <= 1)) {
-        if(quad->node == NULL) {
+        if(quad->node == nullptr) {
             quad->node = node;
         } else {
             Node* auxnode = quad->node;
             while(auxnode->next != nullptr){
                 auxnode = auxnode->next;
             }
+            std::cout << "Esta haciendo una lista :c" << endl;
             auxnode->next = node;
         }
         ++cantNodes;
         return;
     }
-    if((quad->topLeft->x + quad->botRight->x)/2 > node->pos->x) {
+    if((quad->topLeft->x + quad->botRight->x)/2 > node->pos.x) {
         // Indicates topLeftTree
-        if ((quad->topLeft->y + quad->botRight->y)/2 > node->pos->y) {
-            if(quad->topLeftTree == NULL){
+        if ((quad->topLeft->y + quad->botRight->y)/2 > node->pos.y) {
+            if(quad->topLeftTree == nullptr){
                 quad->topLeftTree = new Quad(new Point(quad->topLeft->x, quad->topLeft->y), new Point((quad->topLeft->x + quad->botRight->x) / 2, (quad->topLeft->y + quad->botRight->y) / 2));
             }
             insert(node, quad->topLeftTree);
         }
         // Indicates botLeftTree
         else {
-            if(quad->botLeftTree == NULL){
+            if(quad->botLeftTree == nullptr){
                 quad->botLeftTree = new Quad(new Point(quad->topLeft->x, (quad->topLeft->y + quad->botRight->y) / 2), new Point((quad->topLeft->x + quad->botRight->x) / 2, quad->botRight->y));
             }
             insert(node, quad->botLeftTree);
         }
     }else{
         // Indicates topRightTree
-        if ((quad->topLeft->y + quad->botRight->y)/2 > node->pos->y) {
-            if(quad->topRightTree == NULL){
+        if ((quad->topLeft->y + quad->botRight->y)/2 > node->pos.y) {
+            if(quad->topRightTree == nullptr){
                 quad->topRightTree = new Quad(new Point((quad->topLeft->x + quad->botRight->x) / 2, quad->topLeft->y), new Point(quad->botRight->x, (quad->topLeft->y + quad->botRight->y) / 2));
             }
             insert(node, quad->topRightTree);
         }
         // Indicates botRightTree
         else{
-            if(quad->botRightTree == NULL){
+            if(quad->botRightTree == nullptr){
                 quad->botRightTree = new Quad(new Point((quad->topLeft->x + quad->botRight->x) / 2, (quad->topLeft->y + quad->botRight->y) / 2), new Point(quad->botRight->x, quad->botRight->y));
             }
             insert(node, quad->botRightTree);
@@ -60,9 +61,10 @@ void QuadTree::insert(Node* node, Quad* &quad){
     cantQuads++;
 }
 
+
 // Check if current quadtree contains the point
-bool QuadTree::inBoundary(Point* point, Quad* quad){
-    if(point->x >= quad->topLeft->x && point->x <= quad->botRight->x && point->y >= quad->topLeft->y && point->y <= quad->botRight->y){
+bool QuadTree::inBoundary(Point point, Quad* quad){
+    if(point.x >= quad->topLeft->x && point.x <= quad->botRight->x && point.y >= quad->topLeft->y && point.y <= quad->botRight->y){
         return true;
     }else{
         return false;
@@ -77,7 +79,7 @@ int QuadTree::totalNodes(){
     return cantQuads;
 }
 
-void QuadTree::preOrder(Quad* &quad, queue<Node*>* &lista){
+void QuadTree::preOrder(Quad* quad, queue<Node*>* &lista){
     if(quad != nullptr){
         Node* auxnode = quad->node;
         while(auxnode != nullptr){
@@ -91,16 +93,15 @@ void QuadTree::preOrder(Quad* &quad, queue<Node*>* &lista){
     }
 }
 
-queue<QuadTree::Node*>* QuadTree::list(){
+queue<Node*>* QuadTree::list(){
     queue<Node*>* listaPoblacion = new queue<Node*>();
     preOrder(Root, listaPoblacion);
     return listaPoblacion;
 }
 
-QuadTree::QuadTree(float x1, float y1, float x2, float y2){
-    Root = new Quad(new Point((int)x1*Presicion, (int)y1*Presicion), new Point((int)x2*Presicion, (int)y2*Presicion));
-    Presicion = 1000;
-    cantQuads = 0;
+QuadTree::QuadTree(int x1, int y1, int x2, int y2){
+    Root = new Quad(new Point(x1, y1), new Point(x2, y2));
+    cantQuads = 1;
     cantNodes = 0;
 }
 
@@ -108,3 +109,59 @@ QuadTree::~QuadTree(){
 
 
 }
+
+
+
+
+
+
+Node* QuadTree::search(int x, int y){
+    return search(Root, Point(x, y));
+}
+
+Node* QuadTree::search(Point point){
+    return search(Root, point);
+}
+
+Node* QuadTree::search(Quad* quad, Point point){
+	// Current quad cannot contain it
+	if (inBoundary(point, quad) == true){
+		return nullptr;
+    }
+	// We are at a quad of unit length
+	// We cannot subdivide this quad further
+	if (quad->node != nullptr){
+		return quad->node;
+    }
+	if ((quad->topLeft->x + quad->botRight->x) / 2 > point.x) {
+		// Indicates topLeftTree
+		if ((quad->topLeft->y + quad->botRight->y) / 2 > point.y) {
+			if (quad->topLeftTree == nullptr){
+				return nullptr;
+            }
+			return search(quad->topLeftTree, point);
+		}
+		// Indicates botLeftTree
+		else {
+			if (quad->botLeftTree == nullptr){
+				return nullptr;
+            }
+			return search(quad->botLeftTree, point);
+		}
+	}else{
+		// Indicates topRightTree
+		if ((quad->topLeft->y + quad->botRight->y) / 2 > point.y) {
+			if (quad->topRightTree == nullptr){
+				return nullptr;
+            }
+			return search(quad->topRightTree, point);
+		}
+		// Indicates botRightTree
+		else {
+			if (quad->botRightTree == nullptr){
+				return nullptr;
+            }
+			return search(quad->botRightTree, point);
+		}
+	}
+};  

@@ -13,15 +13,16 @@ int main() {
     // Leemos la primer línea para descartarla, pues es el encabezado.
     getline(archivo, linea);
     // Variables que ocuparemos.
-    QuadTree quadtree = QuadTree(-90, 180, 90, -180);
+    float Presicion = 1000000;
+    QuadTree quadtree = QuadTree(-90*Presicion, 180*Presicion, 90*Presicion, -180*Presicion);
     // Leemos todas las líneas.
     int cont = 0;
-    string AccentCity, City, x, y, Population, aux;
+    string AccentCity, x, y, Population, aux;
     while (getline(archivo, linea) && cont < 10) { //getline(archivo, linea)
         stringstream stream(linea); // Convertir la cadena a un stream. 
         // Saltar valores que no ocuparemos.
         getline(stream, aux, ';');
-        getline(stream, City, ';');
+        getline(stream, aux, ';');
         getline(stream, AccentCity, ';');
         getline(stream, aux, ';');
         getline(stream, Population, ';');
@@ -29,15 +30,15 @@ int main() {
         getline(stream, aux, ';');
         getline(stream, x, ',');
         getline(stream, y, '\n');
-        quadtree.insert((int)stod(x), (int)stod(y), AccentCity, City, stoi(Population)); 
+        quadtree.insert(stod(x)*Presicion, stod(y)*Presicion, AccentCity, stoi(Population)); 
         cont++;
     }
     archivo.close();
-    queue<int>* q = quadtree.list();
-    
+    queue<Node*>* q = quadtree.list();
     cout << quadtree.totalNodes() << "    " << quadtree.totalPoints() << endl;
     for(int i=0 ; i<10 ; i++){
+        cout << "Population " << i << ": " << fixed << setprecision(7) << q->front()->pos.y/(float)Presicion << endl;
         q->pop();
     }
 }
-// g++ -o MaxMinCoords MaxMinCoord.cpp
+// g++ -o main main.cpp QuadTree.cpp Node.cpp Point.cpp
