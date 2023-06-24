@@ -41,6 +41,7 @@ class QuadTree{
         void preOrder(Quad* quad, queue<Node*>* &lista);
         void insert(Node* node, Quad* &quad);
         Node* search(Quad* quad, Point p);
+        void BorrarQuadTree(Quad* quad);
 
     public:
         int totalPoints();    /* Retorna la cantidad de puntos almacenados en el QuadTree. */

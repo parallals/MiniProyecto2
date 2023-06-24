@@ -8,7 +8,23 @@ QuadTree::QuadTree(int x1, int y1, int x2, int y2){
 }
 
 QuadTree::~QuadTree(){
+    BorrarQuadTree(Root);
+}
 
+void QuadTree::BorrarQuadTree(Quad* quad) {
+    if (quad != nullptr) {
+        BorrarQuadTree(quad->topLeftTree);
+        BorrarQuadTree(quad->topRightTree);
+        BorrarQuadTree(quad->botLeftTree);
+        BorrarQuadTree(quad->botRightTree);
+        Node* auxnode = quad->node;
+        Node* auxnext = auxnode->next;
+        while (auxnode != nullptr) {
+            delete auxnode;
+            auxnode = auxnext;
+        }
+        delete quad;
+    }
 }
 
 // Check if current quadtree contains the point
