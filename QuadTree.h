@@ -16,19 +16,17 @@ class QuadTree{
         struct Quad {
             bool State; // false=blanco  true=negro 
             Node* node;
-            Point* topLeft;
-            Point* botRight;
+            Point topLeft;
+            Point botRight;
             Quad* topLeftTree;
             Quad* topRightTree;
             Quad* botLeftTree;
             Quad* botRightTree;
-            Quad(Point* topLeft, Point* botRight){
+            Quad(Point topLeft, Point botRight){
                 this->topLeft = topLeft;
                 this->botRight = botRight;
                 State = false;
                 node = nullptr;
-                topLeft = nullptr;
-                botRight = nullptr;
                 topLeftTree = nullptr;
                 topRightTree = nullptr;
                 botLeftTree = nullptr;
