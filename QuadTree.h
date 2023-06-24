@@ -56,7 +56,7 @@ class QuadTree{
         int AggregateRegion(Point p, int d);    // Retorna la población estimada dentro de una región del plano, tomando como centro el punto p y una distancia d.
         int AggregateRegion(int x, int y, int d);
         QuadTree(int x1, int y1, int x2, int y2);                             // Contructor de QuadTree.
-        ~QuadTree();                            // Destructor de QuadTree.         
+        ~QuadTree();                            // Destructor de QuadTree.     
 };
 
 #endif
