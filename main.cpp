@@ -18,7 +18,7 @@ int main() {
     // Leemos todas las líneas.
     int cont = 0;
     string AccentCity, x, y, Population, aux;
-    while (getline(archivo, linea) && cont < 10) { //getline(archivo, linea)
+    while (getline(archivo, linea) && cont < 100) { //getline(archivo, linea)
         stringstream stream(linea); // Convertir la cadena a un stream. 
         // Saltar valores que no ocuparemos.
         getline(stream, aux, ';');

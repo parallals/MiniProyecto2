@@ -193,3 +193,34 @@ int QuadTree::countRegion(Point p, int d){
     }
     return counter;
 }
+
+int QuadTree::AggregateRegion(Point p, int d){
+    int counter = 0;
+    int xTL = p.x - d; int yTL = p.y - d;
+    if(p.x - d < 0){
+        p.x = 0;
+    }
+    if(p.y - d > 0){
+        p.y = 0;
+    }
+    int xBR = p.x + d; int yBR = p.y + d;
+    if(p.x + d > 360){
+        p.x = 360;
+    }
+    if(p.y + d > 360){
+        p.y = 360;
+    }
+    
+    for(int i = xTL; i < xBR - xTL; ++i){
+        for(int j = yTL; j < yBR - yTL; ++j){
+            Node* aux = search(Root, Point(i,j));
+            if(aux != nullptr){
+                while(aux->next != nullptr){
+                    counter = counter + aux->Population;
+                    aux = aux->next;
+                }
+            };
+        }
+    }
+    return counter;
+}
