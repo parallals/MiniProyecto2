@@ -11,7 +11,7 @@ class Node{
         std::string AccentCity;
         int Population;
         Node* next;
-        Node(int x, int y, std::string AccentCity, int Population);
+        Node(float x, float y, std::string AccentCity, int Population);
         Node(Point point, std::string AccentCity, int Population);
         ~Node();
 };

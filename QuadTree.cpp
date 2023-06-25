@@ -1,7 +1,7 @@
 #include "QuadTree.h"
  
  
-QuadTree::QuadTree(int x1, int y1, int x2, int y2){
+QuadTree::QuadTree(float x1, float y1, float x2, float y2){
     Root = new Quad(Point(x1, y1), Point(x2, y2));
     cantQuads = 1;
     cantNodes = 0;
@@ -35,8 +35,8 @@ bool QuadTree::inBoundary(Point point, Quad* quad){
     return false; // Punto fuera del Quad.
 }
 
-bool QuadTree::interseccionRegiones(Point point, int d, Quad* quad){
-    if((quad->botRight.x < point.x-d) || (quad->topLeft.x > point.x+d) || (quad->botRight.y < point.y-d) || (quad->topLeft.y > point.y+d)){
+bool QuadTree::interseccionRegiones(Point point, float d, Quad* quad) {
+    if((quad->botRight.x < point.x - d) || (quad->topLeft.x > point.x + d) || (quad->botRight.y < point.y - d) || (quad->topLeft.y > point.y + d)){
         return false; // Quad fuera de la Región.
     }
     return true; // Quad dentro o intersectando la Región.
@@ -50,7 +50,7 @@ int QuadTree::totalNodes(){
     return cantQuads;
 }
 
-void QuadTree::insert(int x, int y, string AccentCity, int Population){
+void QuadTree::insert(float x, float y, string AccentCity, int Population){
     Node* node = new Node(x, y, AccentCity, Population);
     insert(node, Root);
 }
@@ -59,7 +59,10 @@ void QuadTree::insert(Node* node){
     insert(node, Root);
 }
 
-void QuadTree::insert(Node* node, Quad* &quad){
+void QuadTree::insert(Node* node, Quad* quad){
+    if(node == NULL){
+        return;
+    }   
     // Current quad cannot contain it
     if(inBoundary(node->pos, quad) == true){
         delete node;
@@ -67,7 +70,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
     }
     // We are at a quad of unit area
     // We cannot subdivide this quad further
-    if((abs(quad->topLeft.x - quad->botRight.x) <= 1) && (abs(quad->topLeft.y - quad->botRight.y) <= 1)) {
+    if((abs(quad->topLeft.x - quad->botRight.x) <= 0.001) && (abs(quad->topLeft.y - quad->botRight.y) <= 0.001)) {
         if(quad->node == nullptr) {
             quad->node = node;
         } else {
@@ -84,7 +87,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
         // Indicates topLeftTree
         if ((quad->topLeft.y + quad->botRight.y)/2 > node->pos.y) {
             if(quad->topLeftTree == nullptr){
-                quad->topLeftTree = new Quad(Point(quad->topLeft.x, quad->topLeft.y), Point((quad->topLeft.x + quad->botRight.x) / 2, (quad->topLeft.y + quad->botRight.y) / 2));
+                quad->topLeftTree = new Quad(Point(quad->topLeft.x, quad->topLeft.y), Point((quad->topLeft.x + quad->botRight.x)/2, (quad->topLeft.y + quad->botRight.y)/2));
                 cantQuads++;
             }
             insert(node, quad->topLeftTree);
@@ -92,7 +95,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
         // Indicates botLeftTree
         else {
             if(quad->botLeftTree == nullptr){
-                quad->botLeftTree = new Quad(Point(quad->topLeft.x, (quad->topLeft.y + quad->botRight.y) / 2), Point((quad->topLeft.x + quad->botRight.x) / 2, quad->botRight.y));
+                quad->botLeftTree = new Quad(Point(quad->topLeft.x, (quad->topLeft.y + quad->botRight.y)/2), Point((quad->topLeft.x + quad->botRight.x)/2, quad->botRight.y));
                 cantQuads++;
             }
             insert(node, quad->botLeftTree);
@@ -101,7 +104,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
         // Indicates topRightTree
         if ((quad->topLeft.y + quad->botRight.y)/2 > node->pos.y) {
             if(quad->topRightTree == nullptr){
-                quad->topRightTree = new Quad(Point((quad->topLeft.x + quad->botRight.x) / 2, quad->topLeft.y), Point(quad->botRight.x, (quad->topLeft.y + quad->botRight.y) / 2));
+                quad->topRightTree = new Quad(Point((quad->topLeft.x + quad->botRight.x)/2, quad->topLeft.y), Point(quad->botRight.x, (quad->topLeft.y + quad->botRight.y)/2));
                 cantQuads++;
             }
             insert(node, quad->topRightTree);
@@ -109,7 +112,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
         // Indicates botRightTree
         else{
             if(quad->botRightTree == nullptr){
-                quad->botRightTree = new Quad(Point((quad->topLeft.x + quad->botRight.x) / 2, (quad->topLeft.y + quad->botRight.y) / 2), Point(quad->botRight.x, quad->botRight.y));
+                quad->botRightTree = new Quad(Point((quad->topLeft.x + quad->botRight.x)/2, (quad->topLeft.y + quad->botRight.y)/2), Point(quad->botRight.x, quad->botRight.y));
                 cantQuads++;
             }
             insert(node, quad->botRightTree);
@@ -117,7 +120,7 @@ void QuadTree::insert(Node* node, Quad* &quad){
     }
 }
 
-Node* QuadTree::search(int x, int y){
+Node* QuadTree::search(float x, float y){
     return search(Root, Point(x, y));
 }
 
@@ -176,10 +179,10 @@ queue<Node*>* QuadTree::list(){
 
 void QuadTree::preOrder(Quad* quad, queue<Node*>* &lista){
     if(quad != nullptr){
-        Node* auxnode = quad->node;
-        while(auxnode != nullptr){
-            lista->push(auxnode);
-            auxnode = auxnode->next;
+        Node* auxnodo = quad->node;
+        while(auxnodo != nullptr){
+            lista->push(auxnodo);
+            auxnodo = auxnodo->next;
         }
         preOrder(quad->topLeftTree, lista);
         preOrder(quad->topRightTree, lista);
@@ -188,11 +191,11 @@ void QuadTree::preOrder(Quad* quad, queue<Node*>* &lista){
     }
 }
 
-int QuadTree::countRegion(int x, int y, int d){
+int QuadTree::countRegion(float x, float y, float d){
     return countRegion(Point(x, y), d);
 }
 
-int QuadTree::countRegion(Point point, int d){
+int QuadTree::countRegion(Point point, float d){
     int countQuads = 0;
     queue<Quad*> cola;
     cola.push(Root);
@@ -200,6 +203,7 @@ int QuadTree::countRegion(Point point, int d){
         Quad* quad = cola.front();
         cola.pop();
         if(interseccionRegiones(point, d, quad) == true){
+            cout << quad->topLeft.x << " | " <<  quad->topLeft.y << " | " <<  quad->botRight.x << " | " <<  quad->botRight.y <<endl;
             Node* auxnodo = quad->node;
             while (auxnodo != nullptr){
                 countQuads++;
@@ -221,8 +225,6 @@ int QuadTree::countRegion(Point point, int d){
     }
     return countQuads;
 }
-
-//Espero que funcione, dejé pequeñas explicaciones en el código 
 /*
 int QuadTree::countRegion(Point p, int d) {
 
@@ -247,7 +249,7 @@ int QuadTree::AggregateRegion(Point p, int d) {
         Point TL = Point(p.x - d, p.y + d);
         Point BR = Point(p.x + d, p.y - d);
 
-        nodeListRegion(p, d, Root,list);
+        nodeListRegion(TL, BR, Root,list);
 
         while (!list->empty()) {
             count = count + list->front()->Population;
@@ -256,65 +258,65 @@ int QuadTree::AggregateRegion(Point p, int d) {
         return count;
 }
 
-void QuadTree::nodeListRegion(Point TL1, Point BR1, Quad *Root, queue<Node *> *&list) {
-
-    Point TL2 = Point(TL1.x, TL1.y); //punto auxiliar para no perder el valor de TL1
-    Point BR2 = Point(BR1.x, BR1.y); //punto auxiliar para no perder el valor de BR1
+void QuadTree::nodeListRegion(Point TL1, Point BR1, Quad* Root, queue<Node*>*& list) {
+    Point TL2 = Point(TL1.x, TL1.y); // punto auxiliar para no perder el valor de TL1
+    Point BR2 = Point(BR1.x, BR1.y); // punto auxiliar para no perder el valor de BR1
 
     if (Root != nullptr) {
-        if (Root->node != nullptr) { //Cuando llege a un nodo hoja adiciona los nodos a la lista
-            Node *auxnode = Root->node;
+        if (Root->node != nullptr) {
+            // Cuando llegue a un nodo hoja, se añaden los nodos a la lista si están dentro de la región dada
+            Node* auxnode = Root->node;
             while (auxnode != nullptr) {
-                if (auxnode->pos.x >= TL1.x && auxnode->pos.x <= BR2.x && auxnode->pos.y >= TL1.y && auxnode->pos.y <= BR2.y) {
-                    lista->push(auxnode);
+                if (auxnode->pos.x >= TL1.x && auxnode->pos.x <= BR1.x && auxnode->pos.y >= TL1.y && auxnode->pos.y <= BR1.y) {
+                    list->push(auxnode);
                 }
                 auxnode = auxnode->next;
             }
-        }else{  //Cuando no sea un nodo hoja se llama recursivamente a los 4 hijos
-                //comprobando si la region de cada hijo se intersecta con la region dada
-            if ((Root->topLeft.x + Root->botRight.x) / 2 > point.x) {
-                // topLeftTree
-                if ((Root->topLeft.y + Root->botRight.y) / 2 > point.y) {
-                    if (Root->topLeftTree != nullptr) {
-                        if (Root->botRight.x< BR1.x) BR2.x = Root->botRight.x;//Se actualiza la region
-                        if (Root->botRight.y< BR1.y) BR2.y = Root->botRight.y;//Se actualiza la region
-                        nodeListRegion(TL2, BR2, Root->topLeftTree, list1);
-                    }
+        } else {
+            // Cuando no es un nodo hoja, se llama recursivamente a los 4 hijos, comprobando si la región de cada hijo se intersecta con la región dada
+
+            // topLeftTree
+            if ((Root->topLeft.x + Root->botRight.x) / 2 > TL1.x && (Root->topLeft.y + Root->botRight.y) / 2 > TL1.y) {
+                if (Root->topLeftTree != nullptr) {
+                    if (Root->botRight.x < BR1.x) BR2.x = Root->botRight.x; // Se actualiza la región
+                    if (Root->botRight.y < BR1.y) BR2.y = Root->botRight.y; // Se actualiza la región
+                    nodeListRegion(TL2, BR2, Root->topLeftTree, list);
                 }
-                // botLeftTree
-                if ((Root->topLeft.y + Root->botRight.y) / 2 <= point.y) {
-                    if (Root->botLeftTree != nullptr) {
-                        if (Root->botRight.x < BR1.x) BR2.x = Root->botRight.x;//Se actualiza la region
-                        if (Root->topLeft.y > TL1.y) TL2.y = Root->topLeft.y;//Se actualiza la region
-                        nodeListRegion(TL2, BR2, Root->botLeftTree, list1);
-                    }
+            }
+
+            // botLeftTree
+            if ((Root->topLeft.x + Root->botRight.x) / 2 > TL1.x && (Root->topLeft.y + Root->botRight.y) / 2 <= BR1.y) {
+                if (Root->botLeftTree != nullptr) {
+                    if (Root->botRight.x < BR1.x) BR2.x = Root->botRight.x; // Se actualiza la región
+                    if (Root->topLeft.y > TL1.y) TL2.y = Root->topLeft.y; // Se actualiza la región
+                    nodeListRegion(TL2, BR2, Root->botLeftTree, list);
                 }
-            }if ((Root->topLeft.x + Root->botRight.x) / 2 <= point.x) {
-                // topRightTree
-                if ((Root->topLeft.y + Root->botRight.y) / 2 > point.y) {
-                    if (Root->topRightTree != nullptr) {
-                        if (Root->topLeft.x > TL1.x) TL2.x = Root->topLeft.x;//Se actualiza la region
-                        if (Root->botRight.y < BR1.y) BR2.y = Root->botRight.y;//Se actualiza la region
-                        nodeListRegion(TL2, BR2, Root->topRightTree, list1);
-                    }
+            }
+
+            // topRightTree
+            if ((Root->topLeft.x + Root->botRight.x) / 2 <= BR1.x && (Root->topLeft.y + Root->botRight.y) / 2 > TL1.y) {
+                if (Root->topRightTree != nullptr) {
+                    if (Root->topLeft.x > TL1.x) TL2.x = Root->topLeft.x; // Se actualiza la región
+                    if (Root->botRight.y < BR1.y) BR2.y = Root->botRight.y; // Se actualiza la región
+                    nodeListRegion(TL2, BR2, Root->topRightTree, list);
                 }
-                // botRightTree
-                if ((Root->topLeft.y + Root->botRight.y) / 2 <= point.y) {
-                    if (Root->botRightTree != nullptr) {
-                        if (Root->topLeft.x > TL1.x) TL2.x = Root->topLeft.x;//Se actualiza la region
-                        if (Root->topLeft.y > TL1.y) TL2.y = Root->topLeft.y;//Se actualiza la region
-                        nodeListRegion(TL2, BR2, Root->botRightTree, list1);
-                    }
+            }
+
+            // botRightTree
+            if ((Root->topLeft.x + Root->botRight.x) / 2 <= BR1.x && (Root->topLeft.y + Root->botRight.y) / 2 <= BR1.y) {
+                if (Root->botRightTree != nullptr) {
+                    if (Root->topLeft.x > TL1.x) TL2.x = Root->topLeft.x; // Se actualiza la región
+                    if (Root->topLeft.y > TL1.y) TL2.y = Root->topLeft.y; // Se actualiza la región
+                    nodeListRegion(TL2, BR2, Root->botRightTree, list);
                 }
             }
         }
     }
-    return lista;
 }
-*/
+
 //Aquí termina
 
-/*
+
 int QuadTree::countRegion(Point p, int d){
     int counter = 0;
     int xTL = p.x - d; int yTL = p.y - d;

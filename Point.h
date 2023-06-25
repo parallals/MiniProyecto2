@@ -3,9 +3,9 @@
 
 class Point{
     public:
-        int x;
-        int y;
-        Point(int x, int y);
+        float x;
+        float y;
+        Point(float x, float y);
         Point();
         ~Point();
 };
