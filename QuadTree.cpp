@@ -222,11 +222,97 @@ int QuadTree::countRegion(Point point, int d){
     return countQuads;
 }
 
+//Espero que funcione, dejé pequeñas explicaciones en el código 
+/*
+int QuadTree::countRegion(Point p, int d) {
 
+    int count = 0;
+    queue<Node *> *list = new queue<Node *>;
+    Point TL = Point(p.x - d, p.y + d);
+    Point BR = Point(p.x + d, p.y - d);
 
+    nodeListRegion(TL, BR, Root,list); //Retorna una lista con los nodos de la región
 
+    while (!list->empty()) {
+        count++;
+        list->pop();
+    }
+    return count;
+}
 
+int QuadTree::AggregateRegion(Point p, int d) {
 
+        int count = 0;
+        queue<Node *> *list = new queue<Node *>;
+        Point TL = Point(p.x - d, p.y + d);
+        Point BR = Point(p.x + d, p.y - d);
+
+        nodeListRegion(p, d, Root,list);
+
+        while (!list->empty()) {
+            count = count + list->front()->Population;
+            list->pop();
+        }
+        return count;
+}
+
+void QuadTree::nodeListRegion(Point TL1, Point BR1, Quad *Root, queue<Node *> *&list) {
+
+    Point TL2 = Point(TL1.x, TL1.y); //punto auxiliar para no perder el valor de TL1
+    Point BR2 = Point(BR1.x, BR1.y); //punto auxiliar para no perder el valor de BR1
+
+    if (Root != nullptr) {
+        if (Root->node != nullptr) { //Cuando llege a un nodo hoja adiciona los nodos a la lista
+            Node *auxnode = Root->node;
+            while (auxnode != nullptr) {
+                if (auxnode->pos.x >= TL1.x && auxnode->pos.x <= BR2.x && auxnode->pos.y >= TL1.y && auxnode->pos.y <= BR2.y) {
+                    lista->push(auxnode);
+                }
+                auxnode = auxnode->next;
+            }
+        }else{  //Cuando no sea un nodo hoja se llama recursivamente a los 4 hijos
+                //comprobando si la region de cada hijo se intersecta con la region dada
+            if ((Root->topLeft.x + Root->botRight.x) / 2 > point.x) {
+                // topLeftTree
+                if ((Root->topLeft.y + Root->botRight.y) / 2 > point.y) {
+                    if (Root->topLeftTree != nullptr) {
+                        if (Root->botRight.x< BR1.x) BR2.x = Root->botRight.x;//Se actualiza la region
+                        if (Root->botRight.y< BR1.y) BR2.y = Root->botRight.y;//Se actualiza la region
+                        nodeListRegion(TL2, BR2, Root->topLeftTree, list1);
+                    }
+                }
+                // botLeftTree
+                if ((Root->topLeft.y + Root->botRight.y) / 2 <= point.y) {
+                    if (Root->botLeftTree != nullptr) {
+                        if (Root->botRight.x < BR1.x) BR2.x = Root->botRight.x;//Se actualiza la region
+                        if (Root->topLeft.y > TL1.y) TL2.y = Root->topLeft.y;//Se actualiza la region
+                        nodeListRegion(TL2, BR2, Root->botLeftTree, list1);
+                    }
+                }
+            }if ((Root->topLeft.x + Root->botRight.x) / 2 <= point.x) {
+                // topRightTree
+                if ((Root->topLeft.y + Root->botRight.y) / 2 > point.y) {
+                    if (Root->topRightTree != nullptr) {
+                        if (Root->topLeft.x > TL1.x) TL2.x = Root->topLeft.x;//Se actualiza la region
+                        if (Root->botRight.y < BR1.y) BR2.y = Root->botRight.y;//Se actualiza la region
+                        nodeListRegion(TL2, BR2, Root->topRightTree, list1);
+                    }
+                }
+                // botRightTree
+                if ((Root->topLeft.y + Root->botRight.y) / 2 <= point.y) {
+                    if (Root->botRightTree != nullptr) {
+                        if (Root->topLeft.x > TL1.x) TL2.x = Root->topLeft.x;//Se actualiza la region
+                        if (Root->topLeft.y > TL1.y) TL2.y = Root->topLeft.y;//Se actualiza la region
+                        nodeListRegion(TL2, BR2, Root->botRightTree, list1);
+                    }
+                }
+            }
+        }
+    }
+    return lista;
+}
+*/
+//Aquí termina
 
 /*
 int QuadTree::countRegion(Point p, int d){
