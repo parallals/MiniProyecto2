@@ -36,7 +36,7 @@ class QuadTree{
         Quad* Root;
         int cantQuads;
         int cantNodes;
-        bool inBoundary(Point point, Quad* quad);
+        bool inBoundary(Point point, Point p1, Point p2);
         bool interseccionRegiones(Point point, int d, Quad* quad);
         void preOrder(Quad* quad, queue<Node*>* &lista);
         void insert(Node* node, Quad* &quad);

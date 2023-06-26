@@ -31,8 +31,8 @@ void QuadTree::BorrarQuadTree(Quad* quad) {
 }
 
 // Check if current quadtree contains the point
-bool QuadTree::inBoundary(Point point, Quad* quad){
-    if((point.x >= quad->topLeft.x) && (point.x <= quad->botRight.x) && (point.y <= quad->topLeft.y) && (point.y >= quad->botRight.y)){
+bool QuadTree::inBoundary(Point point, Point p1, Point p2){
+    if((point.x >= p1.x) && (point.x <= p2.x) && (point.y <= p1.y) && (point.y >= p2.y)){
         return true; // Punto dentro del Quad.
     }
     return false; // Punto fuera del Quad.
@@ -64,12 +64,12 @@ void QuadTree::insert(Node* node){
 
 void QuadTree::insert(Node* node, Quad* &quad){
     // Current quad cannot contain it
-    if(inBoundary(node->pos, quad) != true){
+    if(inBoundary(node->pos, quad->topLeft, quad->botRight) == false){
         return;
     }
     // We are at a quad of unit area
     // We cannot subdivide this quad further
-    if((abs(quad->topLeft.x - quad->botRight.x) <= 1) && (abs(quad->topLeft.y - quad->botRight.y) <= 1)) {
+    if((quad->topLeft.x - quad->botRight.x <= 1) && (quad->topLeft.y - quad->botRight.y <= 1)) {
         if(quad->node == nullptr) {
             quad->node = node;
         } else {
@@ -129,7 +129,7 @@ Node* QuadTree::search(Point point){
 
 Node* QuadTree::search(Quad* quad, Point point){
 	// Current quad cannot contain it
-	if (inBoundary(point, quad) == false){
+	if (inBoundary(point, quad->topLeft, quad->botRight) == false){
 		return nullptr;
     }
 	// We are at a quad of unit length
@@ -193,8 +193,8 @@ int QuadTree::countRegion(int x, int y, int d){
     return countRegion(Point(x, y), d);
 }
 
-
 int QuadTree::countRegion(Point point, int d){
+    d++;
     int countQuads = 0;
     queue<Quad*> cola;
     cola.push(Root);
@@ -204,8 +204,10 @@ int QuadTree::countRegion(Point point, int d){
         if(interseccionRegiones(point, d, quad) == true){
             Node* auxnodo = quad->node;
             while (auxnodo != nullptr){
-                cout << auxnodo->pos.x <<  " ; " << auxnodo->pos.y << endl;
-                countQuads++;
+                if(inBoundary(auxnodo->pos, Point(point.x-d+1, point.y+d-1), Point(point.x+d-1, point.y-d+1)) == true){
+                    cout << auxnodo->pos.x <<  " ; " << auxnodo->pos.y << endl;
+                    countQuads++;
+                }
                 auxnodo = auxnodo->next;
             }
         }
