@@ -42,6 +42,7 @@ class QuadTree{
         void insert(Node* node, Quad* &quad);
         Node* search(Quad* quad, Point p);
         void BorrarQuadTree(Quad* quad);
+        void nodeListRegion(Point TL, Point BR, Quad *Root, queue<Node *> *&lista);
 
     public:
         int totalPoints();    /* Retorna la cantidad de puntos almacenados en el QuadTree. */
