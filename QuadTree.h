@@ -47,10 +47,11 @@ class QuadTree{
     public:
         int totalPoints();    /* Retorna la cantidad de puntos almacenados en el QuadTree. */
         int totalNodes();    /* Retorna la cantidad de nodos, tanto blancos como negros, en el QuadTree. */
-        void insert(int x, int y, string AccentCity, int Population);    /* Inserta un nuevo punto p en el QuadTree, asociando a dicho punto la                */
+        void insert(float x, float y, string AccentCity, int Population);    /* Inserta un nuevo punto p en el QuadTree, asociando a dicho punto la                */
         void insert(Node* node);                                         /* información disponible en data (ej. la población de una ciudad con coordenadas p). */
         Node* search(int x, int y);
         Node* search(Point point);
+        Node* searchInNodeList(float x, float y , Node* node);
         queue<Node*>* list();  // Retorna un contenedor con todos los puntos almacenados en el QuadTree. Por cada punto retorna sus coordenadas y su valor 
                                                 // asociado (ej. la población). Para esta función, queda a criterio de los estudiantes elegir un recorrido entre preorder, 
                                                 // postorder o una variante de inorder. El tipo de retorno dependerá del tipo de contenedor que se utilice.

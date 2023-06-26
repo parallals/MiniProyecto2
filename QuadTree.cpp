@@ -53,7 +53,7 @@ int QuadTree::totalNodes(){
     return cantQuads;
 }
 
-void QuadTree::insert(int x, int y, string AccentCity, int Population){
+void QuadTree::insert(float x, float y, string AccentCity, int Population){
     Node* node = new Node(x, y, AccentCity, Population);
     insert(node, Root);
 }
@@ -224,6 +224,21 @@ int QuadTree::countRegion(Point point, int d){
     }
     return countQuads;
 }
+
+Node* QuadTree::searchInNodeList(float x, float y , Node* node){
+    Node* minDistance = node;
+    float dis1 = sqrt(pow(x - minDistance->x, 2) + pow(y - minDistance->y, 2));
+    while (node->next != nullptr){
+        float dis2 = sqrt(pow(x - node->next->x, 2) + pow(y - node->next->y, 2));
+        if(dis2 < dis1){
+            dis1 = dis2;
+            minDistance = node->next;
+        }
+        node = node->next;
+    }
+    return minDistance;
+}
+
 /*
 //Espero que funcione, dejé pequeñas explicaciones en el código 
 
