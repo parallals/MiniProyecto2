@@ -13,13 +13,12 @@ QuadTree::~QuadTree(){
 
 void QuadTree::BorrarQuadTree(Quad* quad) {
     
-    if (quad != nullptr) {
+    if(quad != nullptr){
         BorrarQuadTree(quad->topLeftTree);
         BorrarQuadTree(quad->topRightTree);
         BorrarQuadTree(quad->botLeftTree);
         BorrarQuadTree(quad->botRightTree);
-        if (quad->node != nullptr)
-        {
+        if(quad->node != nullptr){
             Node *auxnode = quad->node;
             while (auxnode != nullptr) {
                 Node *auxnext = auxnode->next;
@@ -40,7 +39,7 @@ bool QuadTree::inBoundary(Point point, Quad* quad){
 }
 
 bool QuadTree::interseccionRegiones(Point point, int d, Quad* quad){
-    if((quad->botRight.x < point.x-d) || (quad->topLeft.x > point.x+d) || (quad->botRight.y < point.y-d) || (quad->topLeft.y > point.y+d)){
+    if((quad->botRight.x < point.x-d) || (quad->topLeft.x > point.x+d) || (quad->topLeft.y < point.y-d) || (quad->botRight.y > point.y+d)){
         return false; // Quad fuera de la Región.
     }
     return true; // Quad dentro o intersectando la Región.
@@ -130,7 +129,7 @@ Node* QuadTree::search(Point point){
 
 Node* QuadTree::search(Quad* quad, Point point){
 	// Current quad cannot contain it
-	if (inBoundary(point, quad) != true){
+	if (inBoundary(point, quad) == false){
 		return nullptr;
     }
 	// We are at a quad of unit length
@@ -194,7 +193,7 @@ int QuadTree::countRegion(int x, int y, int d){
     return countRegion(Point(x, y), d);
 }
 
-/*
+
 int QuadTree::countRegion(Point point, int d){
     int countQuads = 0;
     queue<Quad*> cola;
@@ -205,6 +204,7 @@ int QuadTree::countRegion(Point point, int d){
         if(interseccionRegiones(point, d, quad) == true){
             Node* auxnodo = quad->node;
             while (auxnodo != nullptr){
+                cout << auxnodo->pos.x <<  " ; " << auxnodo->pos.y << endl;
                 countQuads++;
                 auxnodo = auxnodo->next;
             }
@@ -224,7 +224,7 @@ int QuadTree::countRegion(Point point, int d){
     }
     return countQuads;
 }
-*/
+/*
 //Espero que funcione, dejé pequeñas explicaciones en el código 
 
 int QuadTree::countRegion(Point p, int d) {
@@ -316,7 +316,7 @@ void QuadTree::nodeListRegion(Point TL1, Point BR1, Quad *Root, queue<Node *> *&
         }
     }
 }
-
+*/
 //Aquí termina
 
 /*
