@@ -233,7 +233,7 @@ int QuadTree::AggregateRegion(int x, int y, int d) {
 
 int QuadTree::AggregateRegion(Point point, int d) {
     d++;
-    int countQuads = 0;
+    int countPopulation = 0;
     queue<Quad *> cola;
     cola.push(Root);
     while (cola.empty() == false) {
@@ -244,7 +244,7 @@ int QuadTree::AggregateRegion(Point point, int d) {
             while (auxnodo != nullptr) {
                 if (inBoundary(auxnodo->pos, Point(point.x - d + 1, point.y + d - 1), Point(point.x + d - 1, point.y - d + 1)) == true) {
                     cout << auxnodo->pos.x << " ; " << auxnodo->pos.y << endl;
-                    countQuads+=auxnodo->Population;
+                    countPopulation+=auxnodo->Population;
                 }
                 auxnodo = auxnodo->next;
             }
@@ -262,7 +262,7 @@ int QuadTree::AggregateRegion(Point point, int d) {
             cola.push(quad->botRightTree);
         }
     }
-    return countQuads;
+    return countPopulation;
 }
 
 Node* QuadTree::searchInNodeList(float x, float y , Node* node){
