@@ -40,7 +40,7 @@ int main() {
         q->pop();
     }
     cout << "Cantidad de Nodos: " << quadtree.totalNodes() << "   |   Cantidad de Puntos: " << quadtree.totalPoints() << endl;
-    cout << "Nodos dentro de x=[-30,30] e y=[-30,30]: " << quadtree.countRegion(0, 0, 30) << endl;
+    cout << "Nodos dentro de x=[-30,30] e y=[-30,30]: " << quadtree.AggregateRegion(0, 0, 30) << endl;
     
 }
 // g++ -o main main.cpp QuadTree.cpp Node.cpp Point.cpp

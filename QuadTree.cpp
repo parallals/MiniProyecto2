@@ -227,6 +227,44 @@ int QuadTree::countRegion(Point point, int d){
     return countQuads;
 }
 
+int QuadTree::AggregateRegion(int x, int y, int d) {
+    return AggregateRegion(Point(x, y), d);
+}
+
+int QuadTree::AggregateRegion(Point point, int d) {
+    d++;
+    int countQuads = 0;
+    queue<Quad *> cola;
+    cola.push(Root);
+    while (cola.empty() == false) {
+        Quad *quad = cola.front();
+        cola.pop();
+        if (interseccionRegiones(point, d, quad) == true) {
+            Node *auxnodo = quad->node;
+            while (auxnodo != nullptr) {
+                if (inBoundary(auxnodo->pos, Point(point.x - d + 1, point.y + d - 1), Point(point.x + d - 1, point.y - d + 1)) == true) {
+                    cout << auxnodo->pos.x << " ; " << auxnodo->pos.y << endl;
+                    countQuads+=auxnodo->Population;
+                }
+                auxnodo = auxnodo->next;
+            }
+        }
+        if (quad->topLeftTree != nullptr) {
+            cola.push(quad->topLeftTree);
+        }
+        if (quad->topRightTree != nullptr) {
+            cola.push(quad->topRightTree);
+        }
+        if (quad->botLeftTree != nullptr) {
+            cola.push(quad->botLeftTree);
+        }
+        if (quad->botRightTree != nullptr) {
+            cola.push(quad->botRightTree);
+        }
+    }
+    return countQuads;
+}
+
 Node* QuadTree::searchInNodeList(float x, float y , Node* node){
     Node* minDistance = node;
     float dis1 = sqrt(pow(x - minDistance->x, 2) + pow(y - minDistance->y, 2));
