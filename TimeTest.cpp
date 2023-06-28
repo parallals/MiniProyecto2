@@ -143,8 +143,12 @@ int main(){
     cout << endl;
     cout<<"QuadTree, AggregateRegion():"<<endl;
     cout << endl;
-    long d1 = 1 ; long d2 = 2 ; long d3 = 8 ; long d4 = 15 ; long d5 = 90;
+    int d1 = 15 ; int d2 = 30 ; int d3 = 45 ; int d4 = 60 ; int d5 = 75;
+    int d6 = 90 ; int d7 = 105 ; int d8 = 120 ; int d9 = 135 ; int d10 = 150; 
+    int d11 = 165 ; int d12 = 180;
     long dur1 = 0 ; long dur2 = 0 ; long dur3 = 0 ; long dur4 = 0 ; long dur5 = 0;
+    long dur6 = 0 ; long dur7 = 0 ; long dur8 = 0 ; long dur9 = 0 ; long dur10 = 0;
+    long dur11 = 0 ; long dur12 = 0 ;
     QuadTree* quadtree = QuadTreeCompleto();
     for(int i = 0; i<20 ; ++i){
         dur1 = dur1 + TestAggregate(quadtree, d1);
@@ -152,12 +156,26 @@ int main(){
         dur3 = dur3 + TestAggregate(quadtree, d3);
         dur4 = dur4 + TestAggregate(quadtree, d4);
         dur5 = dur5 + TestAggregate(quadtree, d5);
+        dur6 = dur6 + TestAggregate(quadtree, d6);
+        dur7 = dur7 + TestAggregate(quadtree, d7);
+        dur8 = dur8 + TestAggregate(quadtree, d8);
+        dur9 = dur9 + TestAggregate(quadtree, d9);
+        dur10 = dur10 + TestAggregate(quadtree, d10);
+        dur11 = dur11 + TestAggregate(quadtree, d11);
+        dur12 = dur12 + TestAggregate(quadtree, d12);
     }
-    cout << "Aggregate de 2x2 en microsegundos: " << dur1/20 << endl;
-	cout << "Aggregate de 5x5 en microsegundos:" << dur2/20 << endl;
-	cout << "Aggregate de 17x17 en microsegundos:" << dur3/20 << endl;
-	cout << "Aggregate de 31x31 en microsegundos:" << dur4/20 << endl;
-	cout << "Aggregate de 181x181 en microsegundos:: " << dur5/20 << endl;    
+    cout << "Aggregate de 15x15 en microsegundos: " << dur1/20 << endl;
+	cout << "Aggregate de 30x30 en microsegundos:" << dur2/20 << endl;
+	cout << "Aggregate de 45x45 en microsegundos:" << dur3/20 << endl;
+	cout << "Aggregate de 60x60 en microsegundos:" << dur4/20 << endl;
+	cout << "Aggregate de 75x75 en microsegundos:: " << dur5/20 << endl;
+	cout << "Aggregate de 90x90 en microsegundos:: " << dur6/20 << endl; 
+	cout << "Aggregate de 105x105 en microsegundos:: " << dur7/20 << endl; 
+	cout << "Aggregate de 120x120 en microsegundos:: " << dur8/20 << endl; 
+	cout << "Aggregate de 135x135 en microsegundos:: " << dur9/20 << endl; 
+	cout << "Aggregate de 150x150 en microsegundos:: " << dur10/20 << endl; 
+	cout << "Aggregate de 165x165 en microsegundos:: " << dur11/20 << endl; 
+	cout << "Aggregate de 180x180 en microsegundos:: " << dur12/20 << endl;   
     cout << endl;
 
     cout<< "----------------------------------------------------------------------------------" <<endl;
@@ -172,12 +190,26 @@ int main(){
         dur3 = dur3 + TestCount(quadtree, d3);
         dur4 = dur4 + TestCount(quadtree, d4);
         dur5 = dur5 + TestCount(quadtree, d5);
+        dur6 = dur6 + TestCount(quadtree, d6);
+        dur7 = dur7 + TestCount(quadtree, d7);
+        dur8 = dur8 + TestCount(quadtree, d8);
+        dur9 = dur9 + TestCount(quadtree, d9);
+        dur10 = dur10 + TestCount(quadtree, d10);
+        dur11 = dur11 + TestCount(quadtree, d11);
+        dur12 = dur12 + TestCount(quadtree, d12);
     }
-    cout << "Aggregate de 2x2 en microsegundos: " << dur1/20 << endl;
-	cout << "Aggregate de 5x5 en microsegundos:" << dur2/20 << endl;
-	cout << "Aggregate de 17x17 en microsegundos:" << dur3/20 << endl;
-	cout << "Aggregate de 31x31 en microsegundos:" << dur4/20 << endl;
-	cout << "Aggregate de 181x181 en microsegundos:: " << dur5/20 << endl;    
+    cout << "Count de 15x15 en microsegundos: " << dur1/20 << endl;
+	cout << "Count de 30x30 en microsegundos:" << dur2/20 << endl;
+	cout << "Count de 45x45 en microsegundos:" << dur3/20 << endl;
+	cout << "Count de 60x60 en microsegundos:" << dur4/20 << endl;
+	cout << "Count de 75x75 en microsegundos: " << dur5/20 << endl;
+	cout << "Count de 90x90 en microsegundos: " << dur6/20 << endl; 
+	cout << "Count de 105x105 en microsegundos: " << dur7/20 << endl; 
+	cout << "Count de 120x120 en microsegundos: " << dur8/20 << endl; 
+	cout << "Count de 135x135 en microsegundos: " << dur9/20 << endl; 
+	cout << "Count de 150x150 en microsegundos: " << dur10/20 << endl; 
+	cout << "Count de 165x165 en microsegundos: " << dur11/20 << endl; 
+	cout << "Count de 180x180 en microsegundos: " << dur12/20 << endl;    
     cout << endl;
 }
 
