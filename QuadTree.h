@@ -1,21 +1,18 @@
 #ifndef QuadTree_H
 #define QuadTree_H
 
-#include "Node.h"
+#include "QuadTreeADT.h"
 
 #include <cmath>
-#include <queue>
 #include <iostream>
-#include <queue>
 
 using namespace std;
 
-class QuadTree{
+class QuadTree: public QuadTreeADT{
 
     private:
         struct Quad {
-            bool State; // false=blanco  true=negro 
-            Node* node;
+            Node* nodo;
             Point topLeft;
             Point botRight;
             Quad* topLeftTree;
@@ -25,8 +22,14 @@ class QuadTree{
             Quad(Point topLeft, Point botRight){
                 this->topLeft = topLeft;
                 this->botRight = botRight;
-                State = false;
-                node = nullptr;
+                nodo = nullptr;
+                topLeftTree = nullptr;
+                topRightTree = nullptr;
+                botLeftTree = nullptr;
+                botRightTree = nullptr;
+            }
+            ~Quad(){
+                nodo = nullptr;
                 topLeftTree = nullptr;
                 topRightTree = nullptr;
                 botLeftTree = nullptr;
@@ -39,7 +42,7 @@ class QuadTree{
         bool inBoundary(Point point, Point p1, Point p2);
         bool interseccionRegiones(Point point, int d, Quad* quad);
         void preOrder(Quad* quad, queue<Node*>* &lista);
-        void insert(Node* node, Quad* &quad);
+        void insert(Node* nodo, Quad* &quad);
         Node* search(Quad* quad, Point p);
         void BorrarQuadTree(Quad* quad);
         void nodeListRegion(Point TL, Point BR, Quad *Root, queue<Node *> *&lista);
@@ -48,10 +51,10 @@ class QuadTree{
         int totalPoints();    /* Retorna la cantidad de puntos almacenados en el QuadTree. */
         int totalNodes();    /* Retorna la cantidad de nodos, tanto blancos como negros, en el QuadTree. */
         void insert(float x, float y, string AccentCity, int Population);    /* Inserta un nuevo punto p en el QuadTree, asociando a dicho punto la                */
-        void insert(Node* node);                                         /* información disponible en data (ej. la población de una ciudad con coordenadas p). */
+        void insert(Node* nodo);                                         /* información disponible en data (ej. la población de una ciudad con coordenadas p). */
         Node* search(int x, int y);
         Node* search(Point point);
-        Node* searchInNodeList(float x, float y , Node* node);
+        Node* searchInNodeList(float x, float y , Node* nodo);
         queue<Node*>* list();  // Retorna un contenedor con todos los puntos almacenados en el QuadTree. Por cada punto retorna sus coordenadas y su valor 
                                                 // asociado (ej. la población). Para esta función, queda a criterio de los estudiantes elegir un recorrido entre preorder, 
                                                 // postorder o una variante de inorder. El tipo de retorno dependerá del tipo de contenedor que se utilice.
