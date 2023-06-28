@@ -18,8 +18,8 @@ class QuadTreeADT{
 
         virtual int countRegion(Point point, int d) = 0;     /* Retorna la cantidad de Nodos en una región del plano, */
                                                              /* tomando como centro el punto p y una distancia d.     */
-                                                             
-        virtual int AggregateRegion(Point p, int d) = 0;     /* Retorna la población estimada dentro de una región del  */
+
+        virtual long AggregateRegion(Point p, int d) = 0;     /* Retorna la población estimada dentro de una región del  */
                                                              /* plano, tomando como centro el punto p y una distancia d.*/
 };
 

@@ -1,5 +1,6 @@
 #include "QuadTree.h"
 
+#include <iostream>
 #include <sstream>
 #include <fstream>
 #include <cstdlib>
@@ -32,6 +33,8 @@ int main() {
         cont++;
     }
     archivo.close();
+    //Node* nodo = quadtree.search(40.6906 , -88);
+    //cout << nodo->x << " ; " <<  nodo->y  << endl;
     queue<Node*>* q = quadtree.list();
     cout << " size ;" << " x ;" << " y " << endl;
     for(int i=0 ; i<100 ; i++){
@@ -42,4 +45,7 @@ int main() {
     //cout << "Nodos dentro de x=[-30,30] e y=[-30,30]: " << quadtree.AggregateRegion(0, 0, 30) << endl;
     
 }
+
+
+
 // g++ -o main main.cpp QuadTree.cpp Node.cpp Point.cpp

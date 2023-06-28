@@ -3,3 +3,4 @@ https://www.programiz.com/cpp-programming/string-float-conversion#:~:text=C%2B%2
 https://cplusplus.com/reference/iomanip/setprecision/
 https://www.geeksforgeeks.org/quad-tree/
 https://learn.microsoft.com/en-us/cpp/c-language/cpp-integer-limits?view=msvc-170
+https://www.tutorialspoint.com/cplusplus/cpp_data_types.htm

@@ -122,63 +122,15 @@ void QuadTree::insert(Node* nodo, Quad* &quad){
     }
 }
 
-/* Funciones overloading encargadas de llamar al search() recursivo. */
-Node* QuadTree::search(int x, int y){
-    return search(Root, Point(x, y));
-}
-Node* QuadTree::search(Point point){
-    return search(Root, point);
-}
-
-/* Funcion recursiva encargada de realizar la busqueda y retorno de un Nodo en el QuadTree. */
-Node* QuadTree::search(Quad* quad, Point point){
-	// El Nodo no corresponde al Quad actual.
-	if(inBoundary(point, quad->topLeft, quad->botRight) == false){
-		return nullptr;
-    }
-	// El Quad es de tamaño unitario, no se subdividira mas y retornara el nodo.
-	if(quad->nodo != nullptr){
-		return quad->nodo;
-    }
-	if((quad->topLeft.x + quad->botRight.x) / 2 > point.x){
-		// Indicates topLeftTree
-		if((quad->topLeft.y + quad->botRight.y) / 2 > point.y){
-			if(quad->topLeftTree == nullptr){
-				return nullptr;
-            }
-			return search(quad->topLeftTree, point);
-		}
-		// Indicates botLeftTree
-		else{
-			if(quad->botLeftTree == nullptr){
-				return nullptr;
-            }
-			return search(quad->botLeftTree, point);
-		}
-	}else{
-		// Indicates topRightTree
-		if((quad->topLeft.y + quad->botRight.y) / 2 > point.y){
-			if(quad->topRightTree == nullptr){
-				return nullptr;
-            }
-			return search(quad->topRightTree, point);
-		}
-		// Indicates botRightTree
-		else{
-			if(quad->botRightTree == nullptr){
-				return nullptr;
-            }
-			return search(quad->botRightTree, point);
-		}
-	}
-}
-
+/* Funcion encargada de retornar una lista con todos los elementos del Quadtree. */
+/* Hace una llamada la funcion recursiva "preOrder" para hacer una queue.        */
 queue<Node*>* QuadTree::list(){
     queue<Node*>* lista = new queue<Node*>();
     preOrder(Root, lista);
     return lista;
 }
 
+/* Funcion recursiva encargada de ingresar los elementos al queue. Realiza un recorrido preOrder. */
 void QuadTree::preOrder(Quad* quad, queue<Node*>* &lista){
     if(quad != nullptr){
         Node* auxnode = quad->nodo;
@@ -192,10 +144,13 @@ void QuadTree::preOrder(Quad* quad, queue<Node*>* &lista){
         preOrder(quad->botRightTree, lista);
     }
 }
+
+/* Funcion overloading que llama a countRegion(Point point, int d). */
 int QuadTree::countRegion(int x, int y, int d){
     return countRegion(Point(x, y), d);
 }
 
+/* Funcion iterativa que realiza un recorrido BFS y cuenta la cantidad de Nodos en una region. */
 int QuadTree::countRegion(Point point, int d){
     d++;
     int countQuads = 0;
@@ -229,13 +184,16 @@ int QuadTree::countRegion(Point point, int d){
     return countQuads;
 }
 
-int QuadTree::AggregateRegion(int x, int y, int d){
+/* Funcion overloading que llama a AggregateRegion(Point point, int d). */
+long QuadTree::AggregateRegion(int x, int y, int d){
     return AggregateRegion(Point(x, y), d);
 }
 
-int QuadTree::AggregateRegion(Point point, int d){
+/* Funcion iterativa que realiza un recorrido BFS y suma la poblacion total de una region. */
+long QuadTree::AggregateRegion(Point point, int d){
     d++;
-    int countPopulation = 0;
+    long countPopulation = 0;
+
     queue<Quad *> cola;
     cola.push(Root);
     while (cola.empty() == false){
@@ -245,7 +203,7 @@ int QuadTree::AggregateRegion(Point point, int d){
             Node *auxnodo = quad->nodo;
             while (auxnodo != nullptr){
                 if(inBoundary(auxnodo->pos, Point(point.x - d + 1, point.y + d - 1), Point(point.x + d - 1, point.y - d + 1)) == true){
-                    countPopulation+=auxnodo->Population;
+                    countPopulation == countPopulation + auxnodo->Population;
                 }
                 auxnodo = auxnodo->next;
             }
@@ -266,6 +224,57 @@ int QuadTree::AggregateRegion(Point point, int d){
     return countPopulation;
 }
 
+/* Funciones overloading encargadas de llamar al search() recursivo. */
+Node* QuadTree::search(int x, int y){
+    return search(Root, Point(x, y));
+}
+Node* QuadTree::search(Point point){
+    return search(Root, point);
+}
+
+/* Funcion recursiva encargada de realizar la busqueda y retorno de un Nodo en el QuadTree. */
+Node* QuadTree::search(Quad* quad, Point point){
+	// El Nodo no corresponde al Quad actual.
+	if(inBoundary(point, quad->topLeft, quad->botRight) == false){
+		return nullptr;
+    }
+	// El Quad es de tamaño unitario, no se subdividira mas y retornara el nodo con su lista ligada.
+	if(quad->nodo != nullptr){
+		return quad->nodo;
+    }
+	if((quad->topLeft.x + quad->botRight.x) / 2 > point.x){
+		// Entraremos al primer cuadrante.
+		if((quad->topLeft.y + quad->botRight.y) / 2 > point.y){
+			if(quad->topLeftTree == nullptr){
+				return nullptr;
+            }
+			return search(quad->topLeftTree, point);
+		// Entraremos al cuarto cuadrante.
+		}else{
+			if(quad->botLeftTree == nullptr){
+				return nullptr;
+            }
+			return search(quad->botLeftTree, point);
+		}
+	}else{
+		// Entraremos al segundo cuadrante.
+		if((quad->topLeft.y + quad->botRight.y) / 2 > point.y){
+			if(quad->topRightTree == nullptr){
+				return nullptr;
+            }
+			return search(quad->topRightTree, point);
+		// Entraremos al tercer cuadrante.
+		}else{
+			if(quad->botRightTree == nullptr){
+				return nullptr;
+            }
+			return search(quad->botRightTree, point);
+		}
+	}
+}
+
+/* Funcion iterativa que dado una coordenada en valores flotantes, retorna una copia del Nodo mas cercano */
+/* en la lista ligada de Nodos dada. Es recomendable usarla con el nodo retornado por search().           */
 Node* QuadTree::searchInNodeList(float x, float y , Node* nodo){
     Node* minDistance = nodo;
     float dis1 = sqrt(pow(x - minDistance->x, 2) + pow(y - minDistance->y, 2));
@@ -277,5 +286,12 @@ Node* QuadTree::searchInNodeList(float x, float y , Node* nodo){
         }
         nodo = nodo->next;
     }
-    return minDistance;
+    Node* copy = new Node(minDistance->x, minDistance->y, minDistance->AccentCity, minDistance->Population);
+    return copy;
+}
+
+/* Funcion que llama a search() y a searchInNodeList()  para realizar la busqueda especifica de un nodo y retorna una copia. */
+Node* QuadTree::searchSpecificNode(float x, float y){
+    Node* nodo = search((int)x, (int)y);
+    return searchInNodeList(x, y, nodo);
 }
